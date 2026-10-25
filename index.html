@@ -1,943 +1,144 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Operação SALVO</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Chakra+Petch:wght@500;600;700&display=swap" rel="stylesheet">
-<style>
-:root{
-  --bg:#F6F4FB; --surface:#FFFFFF; --sunk:#ECE8F6; --ink:#17112A; --muted:#5E5873; --line:#D9D3EA;
-  --pri:#D80F75; --pri-ink:#FFFFFF; --tint:#FCE3F0;
-  --blue:#2747E8; --yellow:#FFC21A; --orange:#FF6B1A;
-  --alarm:#D7341B; --alarm-bg:#FDE6E1; --ok:#0B8A6A; --ok-bg:#DDF4EC; --warn:#8A5300; --warn-bg:#FFF0CC;
-  --display:"Chakra Petch","Archivo",system-ui,sans-serif;
-  --body:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
-  color-scheme:light;
-  box-sizing:border-box;
-  padding-top:env(safe-area-inset-top,0px);
-  padding-bottom:env(safe-area-inset-bottom,0px);
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg:#120E1D; --surface:#1D1730; --sunk:#0D0A16; --ink:#F3F0FA; --muted:#ABA3C2; --line:#352C4F;
-    --pri:#FF4FA0; --pri-ink:#1A0410; --tint:#3A1530;
-    --blue:#8EA2FF; --yellow:#FFD45A; --orange:#FF8F52;
-    --alarm:#FF7A63; --alarm-bg:#3D1712; --ok:#4FD3A8; --ok-bg:#0F3328; --warn:#FFC968; --warn-bg:#3A2A07;
-    color-scheme:dark;
-  }
-}
-:root[data-theme="dark"]{
-  --bg:#120E1D; --surface:#1D1730; --sunk:#0D0A16; --ink:#F3F0FA; --muted:#ABA3C2; --line:#352C4F;
-  --pri:#FF4FA0; --pri-ink:#1A0410; --tint:#3A1530;
-  --blue:#8EA2FF; --yellow:#FFD45A; --orange:#FF8F52;
-  --alarm:#FF7A63; --alarm-bg:#3D1712; --ok:#4FD3A8; --ok-bg:#0F3328; --warn:#FFC968; --warn-bg:#3A2A07;
-  color-scheme:dark;
-}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-*,*::before,*::after{box-sizing:inherit}
-html,body{margin:0}
-body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.5;-webkit-font-smoothing:antialiased}
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
-button,input,select,textarea{font:inherit;color:inherit}
-button{cursor:pointer}
-:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
-.wrap{max-width:900px;margin:0 auto;padding:0 20px}
-
-/* Barra */
-.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface)}
-.bar .wrap{display:flex;align-items:center;gap:16px;padding-top:10px;padding-bottom:10px;flex-wrap:wrap}
-.stripe{height:5px;background:linear-gradient(90deg,var(--pri) 0 25%,var(--orange) 25% 50%,var(--yellow) 50% 75%,var(--blue) 75% 100%)}
-.brand{font-family:var(--display);font-weight:700;font-size:20px}
-.brand small{display:block;font-family:var(--body);font-weight:500;font-size:13px;color:var(--muted)}
-.spacer{flex:1}
-
-.vault{display:flex;gap:8px}
-.slot{width:44px;height:52px;display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:28px;border-radius:8px;background:var(--sunk);border:2px dashed var(--line);color:var(--muted)}
-.slot.on{background:var(--pri);border:2px solid var(--pri);color:var(--pri-ink)}
-.slot.pop{animation:pop .5s ease-out}
-@keyframes pop{0%{transform:scale(.6)}70%{transform:scale(1.12)}100%{transform:scale(1)}}
-@media (prefers-reduced-motion: reduce){.slot.pop{animation:none}}
-
-main{padding:28px 0 64px}
-h1{font-family:var(--display);font-weight:700;font-size:40px;line-height:1.1;margin:0 0 12px}
-h2{font-family:var(--display);font-weight:600;font-size:28px;line-height:1.15;margin:0 0 8px}
-h3{font-size:18px;margin:28px 0 10px}
-p{margin:0 0 14px;max-width:68ch}
-.lead{font-size:19px}
-.muted{color:var(--muted)}
-.level-tag{display:inline-block;font-weight:700;font-size:14px;color:var(--pri);margin-bottom:6px}
-.situ{background:var(--tint);border-left:5px solid var(--pri);padding:14px 18px;border-radius:0 8px 8px 0;margin:16px 0 20px}
-.situ p:last-child{margin:0}
-
-/* E-mails */
-.mail{background:var(--surface);border:1px solid var(--line);border-radius:8px;margin:0 0 12px;overflow:hidden}
-.mail-head{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;padding:12px 16px;background:var(--sunk);border-bottom:1px solid var(--line);font-size:15px}
-.mail-head b{color:var(--muted);font-weight:500}
-.mail-id{font-family:var(--display);font-weight:700;font-size:18px;grid-row:span 2;align-self:center;width:34px;height:34px;display:grid;place-items:center;border-radius:50%;background:var(--surface);border:1px solid var(--line)}
-.mail-body{padding:12px 16px;font-size:16px}
-.mail-body p{margin:0 0 8px}
-.fake-link{color:var(--blue);text-decoration:underline;background:none;border:0;padding:0;font:inherit;cursor:pointer}
-.link-dest{display:block;margin-top:6px;font-size:14px;background:var(--warn-bg);color:var(--warn);padding:6px 10px;border-radius:4px}
-
-/* Opções */
-.opts{display:grid;gap:8px;margin:0 0 8px}
-.opts.cols{grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
-.opt{display:flex;gap:10px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 14px;cursor:pointer}
-.opt input{margin-top:4px;accent-color:var(--pri);width:18px;height:18px;flex:none}
-.opt:has(input:checked){border-color:var(--pri);background:var(--tint)}
-.radio-row{display:flex;gap:8px;flex-wrap:wrap}
-.radio-row .opt{min-width:72px;justify-content:center;font-family:var(--display);font-weight:700;font-size:20px}
-.radio-row .opt input{margin-top:6px}
-
-/* Nível 2: console */
-.console{display:grid;gap:10px}
-.acc{background:var(--surface);border:1px solid var(--line);border-radius:8px;overflow:hidden}
-.acc-top{display:grid;grid-template-columns:32px minmax(120px,180px) 1fr auto;gap:12px;align-items:start;padding:12px 14px}
-.acc-n{font-family:var(--display);font-weight:700;color:var(--muted)}
-.acc-name{font-weight:700;word-break:break-word}
-.acc-sit{font-size:15px}
-.acc .chk{display:flex;align-items:center;gap:6px;white-space:nowrap;font-weight:600;font-size:15px;cursor:pointer}
-.acc .chk input{width:20px;height:20px;accent-color:var(--alarm)}
-.acc.flag{border-color:var(--alarm)}
-.acc.flag .acc-top{background:var(--alarm-bg)}
-.fix{display:none;border-top:1px dashed var(--line);padding:12px 14px 14px 58px;background:var(--sunk)}
-.acc.flag .fix{display:grid;gap:12px}
-.fix-title{font-size:14px;font-weight:700;color:var(--muted);margin:0}
-.ctl{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
-.ctl > span:first-child{min-width:210px;font-size:15px}
-.toggle{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--surface)}
-.toggle label{padding:5px 14px;font-size:14px;font-weight:600;cursor:pointer;position:relative}
-.toggle input{position:absolute;opacity:0;pointer-events:none}
-.toggle label:has(input:checked){background:var(--ink);color:var(--surface)}
-.toggle label:has(input:focus-visible){outline:3px solid var(--blue);outline-offset:-3px}
-.pw{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.pw input{padding:7px 10px;border:1px solid var(--line);border-radius:6px;background:var(--surface);min-width:200px}
-.pw .meter{font-size:13px;font-weight:600}
-.meter.weak{color:var(--alarm)} .meter.strong{color:var(--ok)}
-.btn.sm{padding:7px 14px;font-size:15px}
-.prog{width:200px;height:10px;border-radius:5px;background:var(--surface);border:1px solid var(--line);overflow:hidden}
-.prog i{display:block;height:100%;width:0;background:var(--ok);transition:width 1.6s linear}
-.saved{font-size:13px;color:var(--ok);font-weight:600}
-@media (max-width:640px){
-  .acc-top{grid-template-columns:28px 1fr;}
-  .acc-top .acc-sit,.acc-top .chk{grid-column:2}
-  .fix{padding-left:14px}
-  .ctl > span:first-child{min-width:0;width:100%}
-}
-
-/* Nível 3: conversa */
-.phone{max-width:380px;margin:0 auto 16px;border-radius:28px;border:10px solid #1B1626;background:#1B1626;box-shadow:0 18px 40px rgba(23,17,42,.25);overflow:hidden;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#111}
-.ph-status{display:flex;justify-content:space-between;font-size:12px;color:#fff;padding:4px 14px 6px;background:#0E5E4F}
-.ph-head{display:flex;align-items:center;gap:10px;background:#0E5E4F;color:#fff;padding:6px 12px 10px}
-.ph-av{width:38px;height:38px;border-radius:50%;background:#7A8C9E;display:grid;place-items:center;font-weight:700;font-size:16px;color:#fff;flex:none;overflow:hidden}
-.ph-name{font-weight:600;font-size:15px;line-height:1.2}
-.ph-sub{font-size:12px;opacity:.85}
-.ph-chat{background:#E9E2D9;padding:12px 10px 14px;display:flex;flex-direction:column;gap:6px;min-height:420px}
-.ph-sys{align-self:center;background:#FFF6C9;color:#5B4A00;font-size:12px;padding:6px 10px;border-radius:8px;text-align:center;max-width:92%}
-.ph-day{align-self:center;background:#DDE8EE;color:#3D4B55;font-size:11px;padding:3px 10px;border-radius:6px}
-.msg{max-width:82%;padding:6px 9px 4px;border-radius:8px;font-size:14px;line-height:1.35;position:relative;box-shadow:0 1px 0 rgba(0,0,0,.08)}
-.msg.in{align-self:flex-start;background:#fff;border-top-left-radius:2px}
-.msg.out{align-self:flex-end;background:#D7F5C4;border-top-right-radius:2px}
-.msg time{display:block;text-align:right;font-size:10.5px;color:#6B7780;margin-top:2px}
-.ph-notif{margin:4px 0;background:rgba(255,255,255,.92);border-radius:12px;padding:8px 10px;font-size:13px;box-shadow:0 2px 8px rgba(0,0,0,.15)}
-.ph-notif b{display:block;font-size:12px;color:#555}
-.ph-input{display:flex;gap:8px;align-items:center;background:#F0F0F0;padding:8px 10px}
-.ph-input span{flex:1;background:#fff;border-radius:18px;padding:7px 12px;font-size:13px;color:#8A8A8A}
-
-/* Nível 4: cena */
-.scene-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:#F3EFE6}
-.scene-wrap svg{display:block;width:100%;min-width:760px;height:auto}
-.hot{cursor:pointer}
-.hot .hit{fill:transparent;stroke:transparent;stroke-width:4;rx:10}
-.hot:hover .hit,.hot:focus-visible .hit{stroke:#2747E8;stroke-dasharray:6 5}
-.hot:focus{outline:none}
-.hot.sel .hit{stroke:#D80F75;stroke-width:5;stroke-dasharray:none;fill:rgba(216,15,117,.10)}
-.hot .mark{display:none}
-.hot.sel .mark{display:block}
-.picked{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
-.chip{font-size:14px;background:var(--tint);color:var(--ink);border:1px solid var(--pri);border-radius:999px;padding:3px 10px}
-
-/* Nível 5: arrastar */
-.pool{min-height:70px;display:flex;flex-wrap:wrap;gap:8px;padding:12px;border:2px dashed var(--line);border-radius:10px;background:var(--surface);margin-bottom:14px}
-.pool:empty::after{content:"Todas as cartas foram distribuídas.";color:var(--muted);font-size:15px;align-self:center}
-.cols4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-@media (max-width:760px){.cols4{grid-template-columns:repeat(2,1fr)}}
-.zone{border-radius:10px;background:var(--sunk);border:2px solid transparent;display:flex;flex-direction:column;min-height:220px}
-.zone h4{margin:0;padding:10px 12px;font-family:var(--display);font-size:18px;border-radius:8px 8px 0 0;color:#fff}
-.zone[data-z="agora"] h4{background:var(--pri)}
-.zone[data-z="seguida"] h4{background:var(--orange)}
-.zone[data-z="depois"] h4{background:var(--blue)}
-.zone[data-z="lixo"] h4{background:#4A4458}
-.zone .drop{flex:1;display:flex;flex-direction:column;gap:8px;padding:10px}
-.zone.over{border-color:var(--ink)}
-.zone.can{cursor:pointer;border-style:dashed;border-color:var(--pri)}
-.dcard{background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--yellow);border-radius:8px;padding:9px 11px;font-size:14.5px;line-height:1.35;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
-.pool .dcard{flex:1 1 240px}
-.dcard.picked-up{outline:3px solid var(--pri);outline-offset:1px}
-.dcard.ghost{opacity:.35}
-.drag-clone{position:fixed;z-index:50;pointer-events:none;box-shadow:0 12px 28px rgba(0,0,0,.25);transform:rotate(-2deg);max-width:300px}
-
-/* Ações */
-.actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:24px;padding-top:20px;border-top:1px solid var(--line)}
-.btn{border:0;border-radius:8px;padding:12px 20px;font-weight:700;font-size:17px;background:var(--pri);color:var(--pri-ink)}
-.btn:disabled{opacity:.45;cursor:not-allowed}
-.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
-.btn.danger{background:var(--alarm);color:#fff}
-.note{padding:12px 16px;border-radius:8px;margin:16px 0;font-weight:500}
-.note.bad{background:var(--alarm-bg);color:var(--alarm)}
-.note.ok{background:var(--ok-bg);color:var(--ok)}
-.note.hint{background:var(--warn-bg);color:var(--warn)}
-
-/* Finais */
-.finale{text-align:center;padding:40px 0}
-.finale .big{font-family:var(--display);font-weight:700;font-size:clamp(56px,14vw,128px);line-height:1;margin:10px 0 20px}
-.finale.win .big{color:var(--ok)}
-.finale.lose .big{color:var(--alarm)}
-.finale p{margin-left:auto;margin-right:auto}
-.extra{text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-top:24px}
-.extra textarea{width:100%;min-height:140px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);resize:vertical;line-height:1.5}
-
-/* Início */
-.pick{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin:16px 0 28px}
-.pick button{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:18px 12px;font-family:var(--display);font-weight:600;font-size:22px}
-.pick button:hover{border-color:var(--pri)}
-.small-links{display:flex;gap:16px;flex-wrap:wrap;font-size:15px}
-.small-links button{background:none;border:0;padding:0;color:var(--blue);text-decoration:underline}
-
-/* Telão e painel */
-.giant{font-family:var(--display);font-weight:700;font-size:clamp(80px,20vw,220px);line-height:1;font-variant-numeric:tabular-nums;text-align:center;margin:10px 0}
-.giant.mid{font-size:clamp(64px,12vw,140px)}
-.giant.hot{color:var(--alarm)}
-.giant-label{text-align:center;font-size:20px;color:var(--muted);margin:0 auto}
-.board{display:grid;gap:10px;margin-top:28px}
-.row{display:flex;align-items:center;gap:16px;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 16px;flex-wrap:wrap}
-.row .gname{font-family:var(--display);font-weight:600;font-size:22px;min-width:110px}
-.row .meta{font-size:14px;color:var(--muted)}
-.row.done{border-color:var(--ok)}
-.badge{font-size:13px;font-weight:600;padding:3px 8px;border-radius:4px;background:var(--sunk)}
-.badge.lock{background:var(--alarm-bg);color:var(--alarm)}
-.badge.ok{background:var(--ok-bg);color:var(--ok)}
-.qrs{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px;margin-top:20px}
-.qr{background:#fff;color:#17112A;border-radius:10px;padding:12px;text-align:center;border:1px solid var(--line)}
-.qr svg{width:100%;height:auto;display:block}
-.qr b{display:block;font-family:var(--display);font-size:22px;margin-top:6px}
-.qr .fallback{font-size:12px;word-break:break-all}
-details.gab{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 16px;margin-top:24px}
-details.gab summary{font-weight:700;cursor:pointer}
-details.gab li{margin-bottom:6px}
-.msgs{display:grid;gap:10px;margin-top:10px}
-.msgs blockquote{margin:0;background:var(--sunk);border-left:4px solid var(--pri);padding:10px 14px;border-radius:0 8px 8px 0;white-space:pre-wrap}
-.offline{font-size:14px;color:var(--muted);margin-top:8px}
-
-@media (max-width:600px){
-  h1{font-size:32px}
-  .slot{width:36px;height:44px;font-size:22px}
-  body{font-size:16px}
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oficina Phishing - Rede Mangue</title>
+  <link rel="stylesheet" href="main.css">
 </head>
 <body>
-<div id="app"></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
-<script>
-(function(){
-"use strict";
 
-var ARTIFACT_URL = "https://claude.ai/artifact/NJW9LmkrdrNXR2aYCNied8";
-var REDE = "Rede Mangue Mercados";
-var CODE = ["S","A","L","V","O"];
-var DURACAO_PADRAO = 55;
+  <!-- SIMULADOR DE WEBMAIL -->
+  <div class="webmail-container">
+    
+    <!-- BARRA SUPERIOR MOBILE (Aparece apenas em telas pequenas) -->
+    <header class="mobile-header">
+      <button id="toggle-sidebar-btn" class="btn-icon" aria-label="Abrir menu">☰</button>
+      <div class="brand">
+        <div class="logo">M</div>
+        <div>
+          <h1 class="brand-title">MangueMail</h1>
+          <p class="brand-sub">REDE MANGUE MERCADOS</p>
+        </div>
+      </div>
+    </header>
 
-var LEVELS = [
-{
-  letra:"S", titulo:"O e-mail isca", tema:"Phishing",
-  situacao:"Ontem às 15h, o gerente de manutenção Paulo recebeu estes 4 e-mails. Um deles entregou a senha dele aos hackers. Descubram qual e marquem os sinais que denunciam o golpe.",
-  dica:"Leiam o endereço do remetente letra por letra. E toquem nos links antes de confiar neles.",
-  consequencia:"Paulo digitou a senha no site falso. Às 2h, os hackers entraram no painel das geladeiras como se fossem ele. Ninguém desconfiou, porque o acesso parecia legítimo.",
-  sinais:[
-    {t:"O endereço do remetente imita o da fornecedora", ok:true},
-    {t:"Urgência: o acesso “expira em 2 horas”", ok:true},
-    {t:"Pede para digitar login e senha", ok:true},
-    {t:"O link mostra um endereço e leva para outro", ok:true},
-    {t:"Saudação genérica: “Prezado cliente”", ok:true},
-    {t:"Traz um anexo em PDF", ok:false},
-    {t:"Foi enviado num domingo", ok:false},
-    {t:"Menciona o nome da fornecedora", ok:false}
-  ]
-},
-{
-  letra:"A", titulo:"A porta aberta", tema:"Senhas, acessos e atualização",
-  situacao:"Com a senha do Paulo, os hackers vão circular pelo painel da FrioTech. Este é o console de acessos. Marquem cada risco e, no próprio console, façam a correção.",
-  dica:"São 5 riscos, e um deles não é uma pessoa. Marcar não basta: cada risco precisa ser corrigido no console.",
-  consequencia:"Com a senha de fábrica, os hackers criaram uma conta própria. Mesmo que a TI trocasse a senha do Paulo, eles continuariam lá dentro."
-},
-{
-  letra:"L", titulo:"A mensagem do chefe", tema:"Engenharia social e falso chefe",
-  situacao:"22h. Ana, gerente da Loja 12, recebe estas mensagens no WhatsApp, de um número novo com a foto do diretor Ricardo. O que Ana deve fazer?",
-  dica:"Se fosse mesmo o Ricardo, como a Ana poderia ter certeza sem usar essa mesma conversa?",
-  consequencia:"Ana passou o código. O “técnico” ganhou acesso de administrador. A foto e o jeito de escrever foram copiados das redes da empresa, e a ligação do “técnico” usava uma voz gerada por IA.",
-  acoesAna:[
-    {t:"Não passar o código para ninguém", v:"sim"},
-    {t:"Responder na conversa perguntando se é ele mesmo", v:"nao"},
-    {t:"Ligar para o número antigo do Ricardo ou para a central oficial", v:"sim"},
-    {t:"Pedir ao técnico que mande foto do crachá pelo WhatsApp", v:"nao"},
-    {t:"Avisar o plantão de TI ou de segurança", v:"sim"},
-    {t:"Passar o código, porque a foto é do Ricardo", v:"nao"},
-    {t:"Combinar com a diretoria uma palavra-código para pedidos urgentes", v:"bonus"}
-  ],
-  sinais:[
-    {t:"Número novo, fora dos contatos", ok:true},
-    {t:"Urgência e pressão emocional", ok:true},
-    {t:"Pede um código que o próprio SMS manda não compartilhar", ok:true},
-    {t:"Pedido fora do processo normal da empresa", ok:true},
-    {t:"Diz que não pode atender ligação", ok:true},
-    {t:"A foto de perfil é diferente da do Ricardo", ok:false},
-    {t:"As mensagens têm erros de português", ok:false}
-  ]
-},
-{
-  letra:"V", titulo:"Inspeção na Loja 12", tema:"Segurança física e rotina",
-  situacao:"Vistoria surpresa no escritório da Loja 12, às 23h. Toquem na imagem para marcar os 7 problemas. Cuidado: 3 coisas da sala estão certas.",
-  dica:"Extintor, câmera e armário de chaves podem estar certos. Leiam as etiquetas e telas de perto.",
-  consequencia:"Com o alarme desligado, ninguém foi avisado quando a temperatura subiu. O problema só foi descoberto pelos repositores às 6h."
-},
-{
-  letra:"O", titulo:"Se mesmo assim acontecer", tema:"Resposta a incidente",
-  situacao:"3h12. O alerta toca: a temperatura está subindo em 3 lojas. Arrastem cada carta para Agora, Em seguida ou Depois. As 3 armadilhas vão para o Lixo.",
-  dica:"Pensem como bombeiros: primeiro apagar o fogo, depois investigar e, por fim, reconstruir.",
-  consequencia:"Os hackers foram contidos, mas tarde: 9 lojas perderam a mercadoria refrigerada, e a empresa não tinha registros para entender por onde entraram.",
-  cartas:[
-    {t:"Registrar tudo: horários, prints, quem fez o quê", aceita:["seguida","agora"]},
-    {t:"Apagar os registros do sistema para “limpar” o ataque", aceita:["lixo"]},
-    {t:"Desconectar o painel da internet e cortar o acesso remoto do fornecedor", aceita:["agora"]},
-    {t:"Avisar a FrioTech, a diretoria e o jurídico (que avalia notificar autoridades e, se houver dados pessoais, a ANPD)", aceita:["seguida"]},
-    {t:"Postar nas redes da empresa que “está tudo sob controle” antes de saber o que houve", aceita:["lixo"]},
-    {t:"Acionar o plantão de TI e o time de crise", aceita:["agora"]},
-    {t:"Descartar com segurança a mercadoria fora da temperatura, trocar as senhas e reunir as lições aprendidas", aceita:["depois"]},
-    {t:"Investigar até descobrir exatamente quem clicou no e-mail, para responsabilizar a pessoa", aceita:["lixo"]},
-    {t:"Passar as geladeiras para o controle manual na loja e conferir com termômetro", aceita:["agora","seguida"]}
-  ]
-}
-];
+    <div class="webmail-body">
+      <!-- OVERLAY DE FUNDO PARA MENU MOBILE -->
+      <div id="sidebar-overlay" class="sidebar-overlay"></div>
 
-/* ---------- Utilidades ---------- */
-var app = document.getElementById("app");
-function el(html){ var d=document.createElement("div"); d.innerHTML=html.trim(); return d.firstChild; }
-function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];}); }
-function fmt(ms){ if(ms<0) ms=0; var s=Math.ceil(ms/1000), m=Math.floor(s/60), r=s%60; return (m<10?"0":"")+m+":"+(r<10?"0":"")+r; }
-function lsGet(k){ try{ var v=localStorage.getItem(k); return v?JSON.parse(v):null; }catch(e){ return null; } }
-function lsSet(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
-function lsDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+      <!-- PAINEL LATERAL / NAVEGAÇÃO DE PASTAS -->
+      <aside class="sidebar" id="sidebar">
+        <div class="brand desktop-only">
+          <div class="logo">M</div>
+          <div>
+            <h1 class="brand-title">MangueMail</h1>
+            <p class="brand-sub">REDE MANGUE MERCADOS</p>
+          </div>
+        </div>
 
-/* ---------- Dados compartilhados (opcional) ---------- */
-var db=null, dbWritable=true, sessao=null, grupos={}, sessaoUnsub=null, gruposUnsub=null, writeChains={};
-function writeDoc(path,data){
-  if(!db||!dbWritable) return Promise.resolve();
-  var prev=writeChains[path]||Promise.resolve();
-  var next=prev.then(function(){ return db.doc(path).set(data).catch(function(e){ if(e&&e.code==="invalid_argument") dbWritable=false; }); });
-  writeChains[path]=next; return next;
-}
-function deleteDoc(path){
-  if(!db||!dbWritable) return Promise.resolve();
-  var prev=writeChains[path]||Promise.resolve();
-  var next=prev.then(function(){ return db.doc(path).delete().catch(function(){}); });
-  writeChains[path]=next; return next;
-}
-function subscribe(){
-  if(!db) return;
-  if(!sessaoUnsub) sessaoUnsub=db.doc("sessao/atual").onSnapshot(function(s){ sessao=s.exists?s.data():null; onShared(); },function(){ sessaoUnsub=null; });
-  if(!gruposUnsub) gruposUnsub=db.collection("grupos").onSnapshot(function(s){ var g={}; s.docs.forEach(function(d){ g[d.id]=d.data(); }); grupos=g; onShared(); },function(){ gruposUnsub=null; });
-}
-function rodadaAtual(){ return sessao && typeof sessao.rodada==="number" ? sessao.rodada : 0; }
+        <button class="btn-compose">✏️ Escrever</button>
 
-/* ---------- Rotas ---------- */
-var mode=null, groupNum=null;
-function route(){
-  var h=(location.hash||"").replace("#","");
-  var m=h.match(/^grupo([1-6])$/);
-  if(m){ mode="grupo"; groupNum=+m[1]; renderGroup(true); }
-  else if(h==="telao"){ mode="telao"; renderTelao(); }
-  else if(h==="painel"){ mode="painel"; renderPainel(); }
-  else { mode="inicio"; renderStart(); }
-}
-window.addEventListener("hashchange",route);
-function go(h){ if(location.hash==="#"+h) route(); else location.hash=h; }
-function onShared(){ if(mode==="grupo") syncGroupFromShared(); else if(mode==="telao") updateTelao(); else if(mode==="painel") updatePainel(); }
+        <nav class="folder-list">
+          <a href="#" class="folder-item active">
+            <span>📥 Caixa de Entrada</span>
+            <span class="badge">4</span>
+          </a>
+          <a href="#" class="folder-item"><span>🚀 Enviados</span></a>
+          <a href="#" class="folder-item"><span>📄 Rascunhos</span></a>
+          <a href="#" class="folder-item"><span>⚠️ Spam</span></a>
+          <a href="#" class="folder-item"><span>🗑️ Lixeira</span></a>
+        </nav>
+      </aside>
 
-function topBar(withVault){
-  return '<header class="bar"><div class="wrap">'+
-    '<div class="brand">Operação SALVO<small>'+REDE+' · time de crise</small></div><div class="spacer"></div>'+
-    (withVault?'<div class="vault" id="vault">'+CODE.map(function(c,i){return '<div class="slot" data-i="'+i+'">'+c+'</div>';}).join("")+'</div>':'')+
-  '</div><div class="stripe"></div></header>';
-}
+      <!-- LISTA DE E-MAILS -->
+      <section class="email-list-section" id="email-list-section">
+        <div class="section-title">CAIXA DE ENTRADA</div>
+        
+        <div class="email-item active" data-id="1">
+          <div class="email-indicator"></div>
+          <div class="email-item-content">
+            <div class="email-sender">Equipe de TI</div>
+            <div class="email-subject">Lembrete: treinamento de segurança na quinta</div>
+            <div class="email-preview">Olá, equipe. Lembrando que o treinamento de segurança da informação...</div>
+          </div>
+        </div>
 
-function renderStart(){
-  app.innerHTML='<div>'+topBar(false)+'<main class="wrap">'+
-    '<h1>Operação SALVO</h1>'+
-    '<p class="lead">A '+REDE+' vai ser atacada às 6h da manhã. Cada nível resolvido libera uma letra. Juntem S-A-L-V-O antes que o tempo acabe.</p>'+
-    '<h3>Qual é o seu grupo?</h3>'+
-    '<div class="pick">'+[1,2,3,4,5,6].map(function(n){return '<button data-g="'+n+'">Grupo '+n+'</button>';}).join("")+'</div>'+
-    '<div class="small-links"><button data-go="telao">Abrir o telão</button><button data-go="painel">Painel da facilitação</button></div>'+
-  '</main></div>';
-  app.querySelectorAll("[data-g]").forEach(function(b){ b.onclick=function(){ go("grupo"+b.dataset.g); }; });
-  app.querySelectorAll("[data-go]").forEach(function(b){ b.onclick=function(){ go(b.dataset.go); }; });
-}
+        <div class="email-item" data-id="2">
+          <div class="email-indicator"></div>
+          <div class="email-item-content">
+            <div class="email-sender">Carla Mendes - FrioTech</div>
+            <div class="email-subject">Boletim trimestral de manutenção</div>
+            <div class="email-preview">Prezado Paulo, o relatório de manutenção do 3º trimestre das 40 lojas...</div>
+          </div>
+        </div>
 
-/* ---------- Grupo ---------- */
-var G=null, currentView=null;
-function gKey(){ return "salvo-grupo-"+groupNum; }
-function freshGroup(r){ return {rodada:r||0,nivel:0,lockUntil:0,dicas:[],erros:0,startLocal:0,concluidoEm:0,extra:""}; }
-function saveGroup(){
-  lsSet(gKey(),G);
-  writeDoc("grupos/g"+groupNum,{grupo:groupNum,nivel:G.nivel,letras:CODE.slice(0,G.nivel).join(""),erros:G.erros,dicas:G.dicas.length,lockUntil:G.lockUntil,concluidoEm:G.concluidoEm,rodada:G.rodada,extra:G.extra||"",atualizadoEm:Date.now()});
-}
-function startAt(){
-  if(sessao&&sessao.status==="rodando"&&sessao.startAt) return sessao.startAt;
-  if(!db&&G&&G.startLocal) return G.startLocal;
-  return 0;
-}
-function duracaoMs(){ return ((sessao&&sessao.duracaoMin)||DURACAO_PADRAO)*60000; }
-function remaining(){ var s=startAt(); return s?(s+duracaoMs()-Date.now()):null; }
-function syncGroupFromShared(){
-  if(!G) return;
-  var r=rodadaAtual();
-  if(r!==G.rodada){ G=freshGroup(r); saveGroup(); renderGroup(false); return; }
-  if(currentView!==viewName()) renderGroup(false);
-}
-function viewName(){
-  if(!G) return "none";
-  if(G.nivel>=5) return "win";
-  var rem=remaining();
-  if(rem===null) return "wait";
-  if(rem<=0) return "lose";
-  return "level"+G.nivel;
-}
-function renderGroup(load){
-  if(load||!G){ G=lsGet(gKey())||freshGroup(rodadaAtual()); if(!Array.isArray(G.dicas)) G.dicas=[]; }
-  currentView=viewName();
-  app.innerHTML=""; app.appendChild(el('<div>'+topBar(true)+'<main class="wrap" id="stage"></main></div>'));
-  paintVault(-1);
-  var stage=document.getElementById("stage"), v=currentView;
-  if(v==="wait") stage.appendChild(waitView());
-  else if(v==="win") stage.appendChild(winView());
-  else if(v==="lose") stage.appendChild(loseView());
-  else stage.appendChild(levelView(G.nivel));
-  tick(); window.scrollTo(0,0);
-}
-function paintVault(popIndex){
-  var v=document.getElementById("vault"); if(!v) return;
-  v.querySelectorAll(".slot").forEach(function(s,i){
-    s.classList.toggle("on",i<G.nivel);
-    if(popIndex===i){ s.classList.remove("pop"); void s.offsetWidth; s.classList.add("pop"); }
-  });
-}
-function waitView(){
-  var n=el('<section><span class="level-tag">Grupo '+groupNum+'</span><h1>Aguardando o início</h1>'+
-    '<p class="lead">Quando a largada for dada, o primeiro nível aparece aqui. Acompanhem o tempo pelo telão.</p>'+
-    (db?'<p class="muted">Esta tela muda sozinha.</p>':'<div class="actions"><button class="btn" id="startLocal">Começar o desafio</button></div>')+'</section>');
-  var b=n.querySelector("#startLocal");
-  if(b) b.onclick=function(){ G.startLocal=Date.now(); saveGroup(); renderGroup(false); };
-  return n;
-}
-function winView(){
-  var n=el('<section class="finale win"><span class="level-tag">Grupo '+groupNum+'</span><div class="big">SALVO</div>'+
-    '<h2>Ataque travado.</h2>'+
-    '<p class="lead">Às 6h as geladeiras da '+REDE+' estavam a 2 °C. Ninguém soube que houve uma tentativa de ataque: é assim que a prevenção funciona.</p>'+
-    '<div class="extra"><h3 style="margin-top:0">Desafio extra</h3>'+
-    '<p>Escrevam a mensagem que a '+REDE+' mandaria aos funcionários amanhã cedo, explicando o que houve e o que cada um deve fazer.</p>'+
-    '<textarea id="extraTxt" maxlength="1200" aria-label="Mensagem aos funcionários" placeholder="Bom dia, equipe…"></textarea>'+
-    '<div class="actions" style="border-top:0;padding-top:0;margin-top:12px"><button class="btn" id="extraSave">Enviar mensagem</button><span class="muted" id="extraMsg"></span></div></div>'+
-  '</section>');
-  var ta=n.querySelector("#extraTxt"); ta.value=G.extra||"";
-  n.querySelector("#extraSave").onclick=function(){
-    G.extra=ta.value.trim(); saveGroup();
-    n.querySelector("#extraMsg").textContent = G.extra ? "Mensagem enviada à facilitação." : "Escrevam a mensagem antes de enviar.";
-  };
-  return n;
-}
-function loseView(){
-  var L=LEVELS[Math.min(G.nivel,4)];
-  return el('<section class="finale lose"><span class="level-tag">Grupo '+groupNum+'</span><div class="big">06:00</div>'+
-    '<h2>O ataque aconteceu.</h2><p class="lead">O grupo parou no nível '+(G.nivel+1)+': '+esc(L.titulo)+'.</p>'+
-    '<div class="situ" style="text-align:left"><p>'+esc(L.consequencia)+'</p></div><p class="muted">Aguardem a facilitação para a revelação.</p></section>');
-}
+        <div class="email-item" data-id="3">
+          <div class="email-indicator"></div>
+          <div class="email-item-content">
+            <div class="email-sender">Suporte FrioTech</div>
+            <div class="email-subject">URGENTE: seu acesso ao painel expira em 2 horas</div>
+            <div class="email-preview">Prezado cliente, Detectamos atividade incomum na sua conta...</div>
+          </div>
+        </div>
 
-function levelView(i){
-  var L=LEVELS[i];
-  var sec=el('<section></section>');
-  sec.appendChild(el('<div><span class="level-tag">Nível '+(i+1)+' de 5 · '+esc(L.tema)+'</span><h1>'+esc(L.titulo)+'</h1></div>'));
-  sec.appendChild(el('<div class="situ"><p>'+esc(L.situacao)+'</p></div>'));
-  var body=el('<div id="lvbody"></div>'); sec.appendChild(body);
-  BUILD[i](body,L);
-  var hintBox=el('<div id="hintbox"></div>');
-  if(G.dicas.indexOf(i)>=0) hintBox.appendChild(el('<div class="note hint">Dica: '+esc(L.dica)+'</div>'));
-  sec.appendChild(hintBox);
-  sec.appendChild(el('<div id="feedback" aria-live="polite"></div>'));
-  var left=2-G.dicas.length, used=G.dicas.indexOf(i)>=0;
-  var acts=el('<div class="actions"><button class="btn" id="submit">Enviar resposta</button>'+
-    '<button class="btn ghost" id="hint"'+((left<=0||used)?' disabled':'')+'>'+(used?'Dica usada':'Usar dica ('+left+' restante'+(left===1?'':'s')+', custa 2 min)')+'</button>'+
-    '<span class="muted" id="lockmsg"></span></div>');
-  sec.appendChild(acts);
-  acts.querySelector("#submit").onclick=function(){ submit(i); };
-  acts.querySelector("#hint").onclick=function(){
-    if(G.dicas.length>=2||G.dicas.indexOf(i)>=0) return;
-    G.dicas.push(i); G.lockUntil=Math.max(G.lockUntil,Date.now()+120000); saveGroup();
-    hintBox.innerHTML=""; hintBox.appendChild(el('<div class="note hint">Dica: '+esc(L.dica)+'</div>'));
-    this.disabled=true; this.textContent="Dica usada"; tick();
-  };
-  return sec;
-}
+        <div class="email-item" data-id="4">
+          <div class="email-indicator"></div>
+          <div class="email-item-content">
+            <div class="email-sender">Recursos Humanos</div>
+            <div class="email-subject">Holerite de outubro disponível</div>
+            <div class="email-preview">Olá! O holerite de outubro já pode ser consultado no Portal do RH...</div>
+          </div>
+        </div>
+      </section>
 
-/* Nível 1 */
-function buildL1(body,L){
-  var mails=[
-    {id:"A",de:"ti@redemangue.com.br",assunto:"Lembrete: treinamento de segurança na quinta",corpo:"<p>Olá, equipe. Lembrando que o treinamento de segurança da informação será na quinta, às 10h, na sala 3. Dúvidas, falem com a TI no ramal 2040.</p><p>Equipe de TI, "+REDE+"</p>"},
-    {id:"B",de:"contato@friotech.com.br",assunto:"Boletim trimestral de manutenção",corpo:"<p>Prezado Paulo, o relatório de manutenção do 3º trimestre das 40 lojas já está disponível no portal de clientes, pelo endereço de sempre. Nenhuma ação é necessária.</p><p>Atenciosamente, Carla Mendes, FrioTech</p>"},
-    {id:"C",de:"Suporte FrioTech &lt;suporte@fri0tech-portal.com&gt;",assunto:"URGENTE: seu acesso ao painel expira em 2 horas",corpo:"<p>Prezado cliente,</p><p>Detectamos atividade incomum na sua conta. Para evitar o bloqueio do monitoramento das suas lojas, revalide seu login e senha em até 2 horas:</p><p><button class=\"fake-link\" type=\"button\" id=\"fakelink\">www.friotech.com.br/acesso</button></p><p>Equipe de Suporte</p>"},
-    {id:"D",de:"rh@redemangue.com.br",assunto:"Holerite de outubro disponível",corpo:"<p>Olá! O holerite de outubro já pode ser consultado no Portal do RH. Acesse pelo atalho de sempre na intranet.</p><p>Recursos Humanos</p>"}
-  ];
-  mails.forEach(function(m){ body.appendChild(el('<article class="mail"><div class="mail-head"><span class="mail-id">'+m.id+'</span><span><b>De:</b> '+m.de+'</span><span><b>Assunto:</b> '+esc(m.assunto)+'</span></div><div class="mail-body">'+m.corpo+'</div></article>')); });
-  var fl=body.querySelector("#fakelink");
-  fl.onclick=function(){ if(fl.nextSibling&&fl.nextSibling.className==="link-dest") return; fl.insertAdjacentHTML("afterend",'<span class="link-dest">Este link leva, na verdade, para: fri0tech-portal.com/login</span>'); };
-  body.appendChild(el('<h3>Qual e-mail é o golpe?</h3>'));
-  body.appendChild(el('<div class="radio-row">'+mails.map(function(m){return '<label class="opt"><input type="radio" name="mail" value="'+m.id+'">'+m.id+'</label>';}).join("")+'</div>'));
-  body.appendChild(el('<h3>Quais sinais denunciam o golpe?</h3>'));
-  body.appendChild(el('<div class="opts cols">'+L.sinais.map(function(s,k){return '<label class="opt"><input type="checkbox" name="sin" value="'+k+'">'+s.t+'</label>';}).join("")+'</div>'));
-}
-function countSignals(name,list){
-  var p=Array.prototype.map.call(app.querySelectorAll('input[name="'+name+'"]:checked'),function(x){return +x.value;});
-  return {good:p.filter(function(k){return list[k].ok;}).length, bad:p.filter(function(k){return !list[k].ok;}).length};
-}
-function checkL1(L){
-  var m=app.querySelector('input[name="mail"]:checked');
-  if(!m||m.value!=="C") return false;
-  var c=countSignals("sin",L.sinais); return c.good>=3&&c.bad===0;
-}
+      <!-- CONTEÚDO DO E-MAIL SELECIONADO -->
+      <main class="email-viewer" id="email-viewer">
+        <!-- Botão Voltar para mobile -->
+        <button id="back-to-list-btn" class="back-btn">← Voltar para a Caixa de Entrada</button>
+        
+        <div id="email-content-area">
+          <!-- Conteúdo dinâmico renderizado via webmail.js -->
+        </div>
+      </main>
+    </div>
+  </div>
 
-/* Nível 2: console com correções */
-var L2_ROWS=[
-  {conta:"admin",sit:"Senha de fábrica “admin”, painel acessível pela internet, sem verificação em duas etapas",risco:true,
-   ctls:[{t:"pw",k:"senha",label:"Senha"},{t:"tg",k:"duas",label:"Verificação em duas etapas",on:false},{t:"tg",k:"internet",label:"Acessível pela internet",on:true}],
-   ok:function(s){ return s.senhaForte && s.internet===false; }},
-  {conta:"joao.silva",sit:"Técnico desligado há 8 meses; a conta ainda está ativa",risco:true,
-   ctls:[{t:"tg",k:"ativa",label:"Conta ativa",on:true},{t:"tg",k:"duas",label:"Verificação em duas etapas",on:false}],
-   ok:function(s){ return s.ativa===false; }},
-  {conta:"maria.costa",sit:"Gerente regional; senha longa e verificação em duas etapas ativa",risco:false,
-   ctls:[{t:"tg",k:"duas",label:"Verificação em duas etapas",on:true},{t:"tg",k:"ativa",label:"Conta ativa",on:true}]},
-  {conta:"manut.loja12",sit:"Senha “Loja12@2019”, usada por 6 pessoas",risco:true,
-   ctls:[{t:"rd",k:"uso",label:"Uso da conta",opts:[["comp","Compartilhada pelas 6 pessoas"],["ind","Uma conta para cada pessoa"]],val:"comp"},{t:"pw",k:"senha",label:"Senha"}],
-   ok:function(s){ return s.uso==="ind"; }},
-  {conta:"relatorio.auto",sit:"Conta interna, só leitura, gera o relatório diário",risco:false,
-   ctls:[{t:"tg",k:"leitura",label:"Somente leitura",on:true}]},
-  {conta:"friotech.suporte",sit:"Acesso remoto do fornecedor ligado 24h, sem registro de quem entrou",risco:true,
-   ctls:[{t:"rd",k:"remoto",label:"Acesso remoto",opts:[["24h","Ligado 24h"],["chamado","Só com chamado, com registro"]],val:"24h"}],
-   ok:function(s){ return s.remoto==="chamado"; }},
-  {conta:"carlos.lima",sit:"Supervisor; verificação em duas etapas ativa",risco:false,
-   ctls:[{t:"tg",k:"duas",label:"Verificação em duas etapas",on:true}]},
-  {conta:"Versão do painel",sit:"Versão 3.1; a 3.4 está disponível há 70 dias e “corrige falha crítica de autenticação”",risco:true,
-   ctls:[{t:"up",k:"atualizado",label:"Atualização 3.4"}],
-   ok:function(s){ return s.atualizado===true; }}
-];
-var L2state=[];
-function strongPw(v){
-  if(!v||v.length<12) return false;
-  if(!/[A-Za-zÀ-ú]/.test(v)||!/[0-9]/.test(v)) return false;
-  if(/admin|loja|senha|2019|123456/i.test(v)) return false;
-  return true;
-}
-function buildL2(body){
-  L2state=L2_ROWS.map(function(r){ var s={}; r.ctls.forEach(function(c){ if(c.t==="tg") s[c.k]=c.on; if(c.t==="rd") s[c.k]=c.val; if(c.t==="up") s[c.k]=false; if(c.t==="pw") s.senhaForte=false; }); return s; });
-  var wrap=el('<div class="console"></div>');
-  L2_ROWS.forEach(function(r,k){
-    var fx=r.ctls.map(function(c,ci){
-      var id="c"+k+"_"+ci;
-      if(c.t==="tg") return '<div class="ctl"><span>'+c.label+'</span><span class="toggle" role="radiogroup" aria-label="'+esc(c.label)+'">'+
-        '<label><input type="radio" name="'+id+'" value="1"'+(c.on?' checked':'')+'>Ligado</label><label><input type="radio" name="'+id+'" value="0"'+(c.on?'':' checked')+'>Desligado</label></span></div>';
-      if(c.t==="rd") return '<div class="ctl"><span>'+c.label+'</span><span class="toggle" role="radiogroup" aria-label="'+esc(c.label)+'">'+
-        c.opts.map(function(o){return '<label><input type="radio" name="'+id+'" value="'+o[0]+'"'+(o[0]===c.val?' checked':'')+'>'+o[1]+'</label>';}).join("")+'</span></div>';
-      if(c.t==="pw") return '<div class="ctl"><span>Nova senha</span><span class="pw"><input type="text" autocomplete="off" spellcheck="false" id="'+id+'" placeholder="12+ caracteres, letras e números" aria-label="Nova senha de '+esc(r.conta)+'"><button class="btn sm" type="button" data-pw="'+id+'">Salvar senha</button><span class="meter" id="'+id+'m"></span></span></div>';
-      if(c.t==="up") return '<div class="ctl"><span>'+c.label+'</span><button class="btn sm" type="button" id="'+id+'">Instalar agora</button><span class="prog"><i id="'+id+'p"></i></span><span class="saved" id="'+id+'s"></span></div>';
-      return "";
-    }).join("");
-    var card=el('<div class="acc" data-k="'+k+'"><div class="acc-top"><span class="acc-n">'+(k+1)+'</span><span class="acc-name">'+esc(r.conta)+'</span><span class="acc-sit">'+r.sit+'</span>'+
-      '<label class="chk"><input type="checkbox" name="risco" value="'+k+'">É risco</label></div>'+
-      '<div class="fix"><p class="fix-title">Corrigir no console</p>'+fx+'</div></div>');
-    wrap.appendChild(card);
-    card.querySelector('input[name="risco"]').onchange=function(){ card.classList.toggle("flag",this.checked); };
-    r.ctls.forEach(function(c,ci){
-      var id="c"+k+"_"+ci;
-      if(c.t==="tg"||c.t==="rd"){
-        card.querySelectorAll('input[name="'+id+'"]').forEach(function(inp){ inp.onchange=function(){ L2state[k][c.k] = c.t==="tg" ? inp.value==="1" : inp.value; }; });
-      }
-      if(c.t==="pw"){
-        var inp=card.querySelector("#"+id), meter=card.querySelector("#"+id+"m");
-        inp.oninput=function(){ var st=strongPw(inp.value); meter.textContent=inp.value?(st?"Forte":"Fraca"):""; meter.className="meter "+(st?"strong":"weak"); };
-        card.querySelector('[data-pw="'+id+'"]').onclick=function(){
-          if(!inp.value){ meter.textContent="Digite uma senha"; meter.className="meter weak"; return; }
-          L2state[k].senhaForte=strongPw(inp.value);
-          meter.textContent="Senha salva"; meter.className="meter "+(L2state[k].senhaForte?"strong":"weak");
-        };
-      }
-      if(c.t==="up"){
-        var b=card.querySelector("#"+id), bar=card.querySelector("#"+id+"p"), sv=card.querySelector("#"+id+"s");
-        b.onclick=function(){
-          b.disabled=true; sv.textContent="Instalando…"; requestAnimationFrame(function(){ bar.style.width="100%"; });
-          setTimeout(function(){ L2state[k].atualizado=true; sv.textContent="Versão 3.4 instalada"; b.textContent="Instalada"; },1700);
-        };
-      }
-    });
-  });
-  body.appendChild(wrap);
-}
-function checkL2(){
-  return L2_ROWS.every(function(r,k){
-    var flagged=app.querySelector('input[name="risco"][value="'+k+'"]').checked;
-    if(!r.risco) return !flagged;
-    return flagged && r.ok(L2state[k]);
-  });
-}
+  <!-- SEÇÃO DA OFICINA PEDAGÓGICA (ABAIXO DO WEBMAIL) -->
+  <section class="pedagogical-section">
+        
+    <div id="tip-box" class="tip-box hidden"></div>
+    <div id="alert-box" class="alert-box hidden">Hm... Ainda tem algo errado.</div>
+    <div id="timer-text" class="timer-text hidden">Nova tentativa em <span id="timer-seconds">30</span> s.</div>
 
-/* Nível 3: conversa */
-function buildL3(body,L){
-  body.appendChild(el(
-  '<div class="phone" role="img" aria-label="Captura de tela de uma conversa de WhatsApp entre Ana e um número novo que se apresenta como o diretor Ricardo">'+
-    '<div class="ph-status"><span>21:58</span><span>4G ▮▮▮ 87%</span></div>'+
-    '<div class="ph-head"><span aria-hidden="true">‹</span><span class="ph-av"><svg viewBox="0 0 38 38" width="38" height="38" aria-hidden="true"><rect width="38" height="38" fill="#8FA7BA"/><circle cx="19" cy="15" r="7.5" fill="#C9936B"/><path d="M11.5 13 q7.5 -9 15 0 q-2 -6 -7.5 -6 q-5.5 0 -7.5 6z" fill="#3A2A20"/><path d="M5 38 q14 -18 28 0z" fill="#1F2A44"/><path d="M17 26 l2 6 l2 -6z" fill="#fff"/></svg></span><div><div class="ph-name">+55 81 99734-2210</div><div class="ph-sub">~ Ricardo Diretor · online</div></div></div>'+
-    '<div class="ph-chat">'+
-      '<span class="ph-day">Hoje</span>'+
-      '<span class="ph-sys">Este número não está nos seus contatos.</span>'+
-      '<div class="msg in">Ana, é o Ricardo. Tô no aeroporto, celular quase sem bateria, troquei de chip. Salva esse número novo<time>21:52</time></div>'+
-      '<div class="msg in">O técnico da FrioTech precisa entrar no sistema AGORA pra uma manutenção de emergência, senão a gente perde a câmara fria inteira 😰<time>21:52</time></div>'+
-      '<div class="msg in">Vai chegar um código de 6 dígitos no seu celular. Me manda aqui que eu repasso pra ele<time>21:53</time></div>'+
-      '<div class="ph-notif"><b>Mensagens · SMS · agora</b>FrioTech: seu código de acesso é 482 913. Não compartilhe este código com ninguém.</div>'+
-      '<div class="msg in">Chegou? Não consigo atender ligação, tô no embarque. Só responde aqui<time>21:56</time></div>'+
-      '<div class="msg in">Resolve isso pra mim, por favor. Não dá pra esperar até amanhã<time>21:57</time></div>'+
-      '<div class="msg out">Oi Ricardo, só um minuto<time>21:58 ✓✓</time></div>'+
-    '</div>'+
-    '<div class="ph-input"><span>Mensagem</span></div>'+
-  '</div>'));
-  body.appendChild(el('<h3>O que a Ana deve fazer?</h3>'));
-  body.appendChild(el('<div class="opts">'+L.acoesAna.map(function(a,k){return '<label class="opt"><input type="checkbox" name="ana" value="'+k+'">'+esc(a.t)+'</label>';}).join("")+'</div>'));
-  body.appendChild(el('<h3>Quais sinais mostram que é golpe?</h3>'));
-  body.appendChild(el('<div class="opts cols">'+L.sinais.map(function(s,k){return '<label class="opt"><input type="checkbox" name="sin3" value="'+k+'">'+s.t+'</label>';}).join("")+'</div>'));
-}
-function checkL3(L){
-  var ok=L.acoesAna.every(function(a,k){ var c=app.querySelector('input[name="ana"][value="'+k+'"]').checked; return !(a.v==="sim"&&!c) && !(a.v==="nao"&&c); });
-  var c=countSignals("sin3",L.sinais); return ok&&c.good>=3&&c.bad===0;
-}
+    <!-- ETAPA 1 -->
+    <div id="step-1" class="quiz-step">
+      <!-- <h3 class="step-title">Desafio - Etapa 1</h3>  -->
+      <p class="step-desc">Selecione o e-mail suspeito na Caixa de Entrada acima e clique no botão para submeter sua análise.</p>
+      <!-- CONTAINER DE BOTÕES LADO A LADO -->
+      <div class="actions-row">
+        <button id="btn-tip" class="btn-tip">💡 Exibir Dica</button>
+        <button id="btn-submit-step1" class="btn-action">Submeter</button>
+      </div>
+    </div>
 
-/* Nível 4: cena ilustrada */
-var L4_ITEMS=[
-  {k:"pc",label:"Computador desbloqueado",ok:true,box:[96,176,226,166]},
-  {k:"postit",label:"Post-it com senha",ok:true,box:[284,148,100,92]},
-  {k:"pendrive",label:"Pen drive desconhecido",ok:true,essencial:true,box:[330,246,116,98]},
-  {k:"backup",label:"Backup antigo",ok:true,box:[36,34,262,80]},
-  {k:"camera",label:"Câmera de segurança",ok:false,box:[380,4,130,64]},
-  {k:"wifi",label:"Wi-Fi de clientes",ok:true,box:[452,92,156,138]},
-  {k:"alarme",label:"Alarme dos freezers",ok:true,box:[452,236,150,96]},
-  {k:"extintor",label:"Extintor",ok:false,box:[618,262,62,140]},
-  {k:"chaves",label:"Armário de chaves",ok:false,box:[612,124,84,104]},
-  {k:"tecnico",label:"Visitante na porta",ok:true,essencial:true,box:[706,20,188,384]}
-];
-function sceneSVG(){
-  var hot=function(it,inner){
-    var b=it.box;
-    return '<g class="hot" data-k="'+it.k+'" tabindex="0" role="button" aria-pressed="false" aria-label="'+esc(it.label)+'">'+inner+
-      '<rect class="hit" x="'+b[0]+'" y="'+b[1]+'" width="'+b[2]+'" height="'+b[3]+'" rx="10"/>'+
-      '<g class="mark"><circle cx="'+(b[0]+b[2]-4)+'" cy="'+(b[1]+4)+'" r="14" fill="#D80F75"/><path d="M'+(b[0]+b[2]-11)+' '+(b[1]+4)+' l5 5 l9 -10" stroke="#fff" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g></g>';
-  };
-  var I={}; L4_ITEMS.forEach(function(it){ I[it.k]=it; });
-  return '<svg viewBox="0 0 900 560" xmlns="http://www.w3.org/2000/svg" font-family="Archivo, system-ui, sans-serif">'+
-  /* parede e chão */
-  '<rect width="900" height="410" fill="#EDE6F5"/><rect y="410" width="900" height="150" fill="#C9BBA6"/>'+
-  '<path d="M0 410 H900" stroke="#A8977E" stroke-width="3"/>'+
-  '<g stroke="#B9A88F" stroke-width="1.5">'+[0,1,2,3,4,5,6].map(function(i){return '<path d="M'+(i*150)+' 410 L'+(i*150-60)+' 560"/>';}).join("")+'</g>'+
-  /* porta */
-  '<rect x="712" y="96" width="170" height="314" fill="#5A4E6B"/><rect x="722" y="106" width="150" height="304" fill="#2E2639"/>'+
-  /* mesa */
-  '<rect x="40" y="342" width="400" height="16" fill="#8A5A3C"/><rect x="56" y="358" width="14" height="110" fill="#6E4630"/><rect x="410" y="358" width="14" height="110" fill="#6E4630"/>'+
-  '<rect x="270" y="358" width="140" height="70" fill="#7A4F35"/>'+
-  /* cadeira vazia */
-  '<rect x="150" y="372" width="96" height="70" rx="12" fill="#3C3450"/><rect x="190" y="442" width="16" height="40" fill="#2A2438"/><path d="M160 492 H236" stroke="#2A2438" stroke-width="8" stroke-linecap="round"/>'+
-  /* prateleira */
-  '<rect x="30" y="112" width="230" height="10" fill="#8A5A3C"/>'+
-  /* textos de apoio: quadro de visitas */
-  '<g><rect x="452" y="346" width="164" height="54" rx="4" fill="#FFFFFF" stroke="#BDB2CF"/><text x="462" y="366" font-size="12" font-weight="700" fill="#17112A">Visitas agendadas hoje</text><text x="462" y="388" font-size="13" fill="#D7341B" font-weight="700">nenhuma</text></g>'+
+    <!-- ETAPA 2 (REVELADA APÓS ACERTAR A ISCA) -->
+    <div id="step-2" class="quiz-step hidden">
+      <h3 class="step-title">Quais sinais denunciam o golpe?</h3>
+      <div class="checkbox-group">
+        <label class="checkbox-item"><input type="checkbox" value="a"> O endereço do remetente imita o da fornecedora;</label>
+        <label class="checkbox-item"><input type="checkbox" value="b"> Urgência: o acesso “expira em 2 horas”;</label>
+        <label class="checkbox-item"><input type="checkbox" value="c"> Pede para digitar login e senha;</label>
+        <label class="checkbox-item"><input type="checkbox" value="d"> O link mostra um endereço e leva para outro;</label>
+        <label class="checkbox-item"><input type="checkbox" value="e"> Saudação genérica: “Prezado cliente”;</label>
+        <label class="checkbox-item"><input type="checkbox" value="f"> Traz um anexo em PDF;</label>
+        <label class="checkbox-item"><input type="checkbox" value="g"> Foi enviado em um domingo;</label>
+        <label class="checkbox-item"><input type="checkbox" value="h"> Menciona o nome da fornecedora;</label>
+      </div>
+      <button id="btn-submit-step2" class="btn-action">Enviar Resposta</button>
+    </div>
+  </section>
 
-  hot(I.backup,'<rect x="48" y="58" width="58" height="54" rx="3" fill="#2747E8"/><rect x="110" y="62" width="50" height="50" rx="3" fill="#FFC21A"/><rect x="164" y="70" width="76" height="42" rx="4" fill="#3C3450"/><text x="172" y="88" font-size="10.5" fill="#fff" font-weight="700">BACKUP</text><text x="172" y="102" font-size="9.5" fill="#fff">geladeiras</text><text x="48" y="52" font-size="11.5" fill="#17112A" font-weight="700">Último backup: 03/2024 · nunca testado</text>')+
-  hot(I.camera,'<rect x="398" y="12" width="18" height="16" fill="#6D6680"/><rect x="410" y="22" width="70" height="30" rx="6" fill="#4A4458" transform="rotate(14 445 37)"/><circle cx="484" cy="50" r="7" fill="#1B1626"/><circle cx="424" cy="32" r="5" fill="#FF3B30"/><text x="436" y="18" font-size="11" fill="#17112A" font-weight="700">REC</text>')+
-  hot(I.pc,'<rect x="104" y="188" width="196" height="128" rx="6" fill="#1B1626"/><rect x="112" y="196" width="180" height="108" fill="#BFD3FF"/>'+
-     '<rect x="112" y="196" width="180" height="18" fill="#2747E8"/><text x="118" y="209" font-size="10" fill="#fff" font-weight="700">Gerência · sessão aberta</text>'+
-     '<rect x="122" y="222" width="160" height="72" rx="3" fill="#fff"/><text x="130" y="238" font-size="10.5" font-weight="700" fill="#17112A">Painel FrioTech</text><text x="130" y="254" font-size="10" fill="#0B8A6A">● conectado como admin</text>'+
-     '<rect x="130" y="262" width="60" height="10" fill="#DDF4EC"/><rect x="196" y="262" width="78" height="10" fill="#ECE8F6"/><rect x="130" y="278" width="144" height="8" fill="#ECE8F6"/>'+
-     '<rect x="192" y="316" width="20" height="18" fill="#2A2438"/><rect x="166" y="332" width="72" height="10" rx="3" fill="#2A2438"/>')+
-  hot(I.postit,'<g transform="rotate(8 330 192)"><rect x="292" y="158" width="84" height="68" fill="#FFE45C"/><text x="302" y="182" font-size="12" fill="#3A2F00" font-weight="700">painel:</text><text x="300" y="202" font-size="11.5" fill="#3A2F00">Loja12@2019</text></g>')+
-  hot(I.pendrive,'<rect x="338" y="252" width="46" height="90" rx="4" fill="#4A4458"/><circle cx="361" cy="272" r="5" fill="#8EF0B5"/><rect x="384" y="298" width="34" height="14" rx="3" fill="#D80F75"/><rect x="384" y="301" width="6" height="8" fill="#B9B2C9"/>'+
-     '<rect x="364" y="318" width="74" height="20" rx="3" fill="#fff" stroke="#D80F75"/><text x="370" y="332" font-size="10" fill="#17112A" font-weight="700">FOLHA 2026</text>')+
-  hot(I.wifi,'<rect x="476" y="118" width="110" height="26" rx="5" fill="#3C3450"/><path d="M490 118 V100 M572 118 V100" stroke="#3C3450" stroke-width="4" stroke-linecap="round"/><circle cx="494" cy="131" r="3" fill="#8EF0B5"/><circle cx="506" cy="131" r="3" fill="#8EF0B5"/>'+
-     '<rect x="460" y="150" width="140" height="74" rx="4" fill="#fff" stroke="#BDB2CF"/><text x="467" y="166" font-size="10.5" fill="#17112A" font-weight="700">MANGUE_CLIENTES</text><text x="467" y="181" font-size="10" fill="#17112A">Wi-Fi aberto a clientes</text><text x="467" y="198" font-size="10" fill="#D7341B" font-weight="700">+ controlador das</text><text x="467" y="212" font-size="10" fill="#D7341B" font-weight="700">geladeiras</text>')+
-  hot(I.alarme,'<rect x="460" y="244" width="142" height="82" rx="8" fill="#26203A"/><text x="474" y="264" font-size="10.5" fill="#B9B2C9">Freezers · Loja 12</text><text x="474" y="292" font-size="22" fill="#8EF0B5" font-family="Chakra Petch, monospace" font-weight="700">-18 °C</text><text x="474" y="314" font-size="10.5" fill="#FF7A63" font-weight="700">ALARME: DESLIGADO</text>')+
-  hot(I.chaves,'<rect x="622" y="134" width="64" height="84" rx="4" fill="#9C6A48"/><rect x="628" y="140" width="52" height="72" rx="3" fill="#B98058"/><rect x="646" y="168" width="16" height="14" rx="2" fill="#5A4E6B"/><path d="M649 168 v-5 a5 5 0 0 1 10 0 v5" stroke="#5A4E6B" stroke-width="2.5" fill="none"/><text x="632" y="206" font-size="9.5" fill="#3A2512" font-weight="700">CHAVES</text>')+
-  hot(I.extintor,'<rect x="634" y="296" width="30" height="96" rx="12" fill="#D7341B"/><rect x="640" y="282" width="18" height="16" fill="#3C3450"/><path d="M658 288 q14 4 12 26" stroke="#3C3450" stroke-width="4" fill="none"/><rect x="626" y="336" width="46" height="22" rx="3" fill="#fff"/><text x="630" y="351" font-size="9.5" fill="#17112A" font-weight="700">Val. 2027</text>')+
-  hot(I.tecnico,'<rect x="736" y="28" width="150" height="50" rx="10" fill="#fff" stroke="#BDB2CF"/><path d="M790 78 l-6 16 l18 -16" fill="#fff" stroke="#BDB2CF"/><text x="746" y="49" font-size="11.5" fill="#17112A">Vim da FrioTech fazer</text><text x="746" y="66" font-size="11.5" fill="#17112A">uma revisão, beleza?</text>'+
-     '<circle cx="796" cy="140" r="24" fill="#B98058"/><path d="M770 132 q26 -26 52 0 z" fill="#2747E8"/><rect x="766" y="128" width="62" height="7" rx="3" fill="#2747E8"/>'+
-     '<rect x="762" y="166" width="68" height="120" rx="14" fill="#2747E8"/><rect x="766" y="286" width="26" height="114" fill="#1B2C8F"/><rect x="800" y="286" width="26" height="114" fill="#1B2C8F"/>'+
-     '<rect x="740" y="176" width="22" height="80" rx="10" fill="#2747E8"/><rect x="830" y="176" width="22" height="70" rx="10" fill="#2747E8"/>'+
-     '<rect x="836" y="244" width="50" height="34" rx="4" fill="#FF6B1A"/><rect x="852" y="236" width="18" height="10" rx="3" fill="none" stroke="#FF6B1A" stroke-width="3"/>'+
-     '')+
-  '</svg>';
-}
-var L4sel={};
-function buildL4(body){
-  L4sel={};
-  var wrap=el('<div><div class="scene-wrap">'+sceneSVG()+'</div><p class="muted" style="margin-top:10px" id="viscount">0 de 7 marcados</p><div class="picked" id="pickedList"></div></div>');
-  body.appendChild(wrap);
-  function refresh(){
-    var n=Object.keys(L4sel).filter(function(k){return L4sel[k];});
-    wrap.querySelector("#viscount").textContent=n.length+" de 7 marcados";
-    wrap.querySelector("#pickedList").innerHTML=L4_ITEMS.filter(function(it){return L4sel[it.k];}).map(function(it){return '<span class="chip">'+esc(it.label)+'</span>';}).join("");
-  }
-  wrap.querySelectorAll(".hot").forEach(function(g){
-    var toggle=function(){ var k=g.dataset.k; L4sel[k]=!L4sel[k]; g.classList.toggle("sel",L4sel[k]); g.setAttribute("aria-pressed",L4sel[k]?"true":"false"); refresh(); };
-    g.addEventListener("click",toggle);
-    g.addEventListener("keydown",function(e){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); toggle(); } });
-  });
-}
-function checkL4(){
-  var good=0,bad=0,ess=true;
-  L4_ITEMS.forEach(function(it){ var s=!!L4sel[it.k]; if(s&&it.ok) good++; if(s&&!it.ok) bad++; if(it.essencial&&!s) ess=false; });
-  return bad===0&&good>=6&&ess;
-}
-
-/* Nível 5: arrastar para colunas */
-var L5held=null;
-function buildL5(body,L){
-  L5held=null;
-  var zones=[["agora","Agora"],["seguida","Em seguida"],["depois","Depois"],["lixo","Lixo"]];
-  var w=el('<div><p class="muted">Arrastem as cartas. Se preferirem, toquem numa carta e depois na coluna.</p>'+
-    '<div class="pool" id="pool" data-z="pool">'+L.cartas.map(function(c,k){return '<div class="dcard" tabindex="0" data-k="'+k+'">'+esc(c.t)+'</div>';}).join("")+'</div>'+
-    '<div class="cols4">'+zones.map(function(z){return '<div class="zone" data-z="'+z[0]+'"><h4>'+z[1]+'</h4><div class="drop" data-z="'+z[0]+'"></div></div>';}).join("")+'</div></div>');
-  body.appendChild(w);
-  var pool=w.querySelector("#pool");
-  function zoneDrop(z){ return z==="pool"?pool:w.querySelector('.drop[data-z="'+z+'"]'); }
-  function setHeld(card){
-    if(L5held) L5held.classList.remove("picked-up");
-    L5held=card; if(card) card.classList.add("picked-up");
-    w.querySelectorAll(".zone").forEach(function(z){ z.classList.toggle("can",!!card); });
-  }
-  function moveTo(card,z){ zoneDrop(z).appendChild(card); setHeld(null); }
-  w.querySelectorAll(".zone").forEach(function(z){
-    z.addEventListener("click",function(){ if(L5held) moveTo(L5held,z.dataset.z); });
-  });
-  pool.addEventListener("click",function(e){ if(L5held&&e.target===pool) moveTo(L5held,"pool"); });
-  w.querySelectorAll(".dcard").forEach(function(card){
-    var sx=0,sy=0,dragging=false,clone=null,pid=null,offX=0,offY=0;
-    card.addEventListener("pointerdown",function(e){
-      if(e.button!==undefined&&e.button!==0) return;
-      sx=e.clientX; sy=e.clientY; dragging=false; pid=e.pointerId;
-      var r=card.getBoundingClientRect(); offX=e.clientX-r.left; offY=e.clientY-r.top;
-      try{ card.setPointerCapture(pid); }catch(_){}
-    });
-    card.addEventListener("pointermove",function(e){
-      if(pid!==e.pointerId) return;
-      if(!dragging && Math.hypot(e.clientX-sx,e.clientY-sy)>6){
-        dragging=true; setHeld(null);
-        clone=card.cloneNode(true); clone.classList.add("drag-clone"); clone.style.width=card.getBoundingClientRect().width+"px";
-        document.body.appendChild(clone); card.classList.add("ghost");
-      }
-      if(dragging){
-        clone.style.left=(e.clientX-offX)+"px"; clone.style.top=(e.clientY-offY)+"px";
-        var t=document.elementFromPoint(e.clientX,e.clientY), z=t&&t.closest?t.closest(".zone,.pool"):null;
-        w.querySelectorAll(".zone,.pool").forEach(function(x){ x.classList.toggle("over",x===z); });
-      }
-    });
-    function end(e){
-      if(pid!==e.pointerId) return; pid=null;
-      if(dragging){
-        var t=document.elementFromPoint(e.clientX,e.clientY), z=t&&t.closest?t.closest(".zone,.pool"):null;
-        if(z) moveTo(card,z.dataset.z);
-        card.classList.remove("ghost"); if(clone) clone.remove(); clone=null;
-        w.querySelectorAll(".over").forEach(function(x){ x.classList.remove("over"); });
-        dragging=false;
-      } else {
-        setHeld(L5held===card?null:card);
-      }
-    }
-    card.addEventListener("pointerup",end);
-    card.addEventListener("pointercancel",function(e){ if(pid!==e.pointerId) return; pid=null; if(clone) clone.remove(); clone=null; card.classList.remove("ghost"); dragging=false; });
-    card.addEventListener("click",function(e){ e.stopPropagation(); });
-    card.addEventListener("keydown",function(e){
-      if(e.key==="Enter"||e.key===" "){ e.preventDefault(); setHeld(L5held===card?null:card); }
-      var map={"1":"agora","2":"seguida","3":"depois","4":"lixo","0":"pool"};
-      if(map[e.key]){ moveTo(card,map[e.key]); card.focus(); }
-    });
-  });
-}
-function checkL5(L){
-  if(app.querySelector("#pool .dcard")) return false;
-  return L.cartas.every(function(c,k){
-    var card=app.querySelector('.dcard[data-k="'+k+'"]'); var d=card&&card.parentElement;
-    return d && c.aceita.indexOf(d.dataset.z)>=0;
-  });
-}
-
-var BUILD=[buildL1,buildL2,buildL3,buildL4,buildL5];
-var CHECKS=[checkL1,checkL2,checkL3,checkL4,checkL5];
-
-function submit(i){
-  var fb=document.getElementById("feedback");
-  if(Date.now()<G.lockUntil) return;
-  var rem=remaining(); if(rem!==null&&rem<=0) return;
-  if(CHECKS[i](LEVELS[i])){
-    G.nivel=i+1; if(G.nivel>=5) G.concluidoEm=Date.now(); G.lockUntil=0; saveGroup();
-    fb.innerHTML=""; fb.appendChild(el('<div class="note ok">Brecha fechada. Letra liberada: '+LEVELS[i].letra+'. Anotem no Cartão de Código.</div>'));
-    paintVault(i); document.getElementById("submit").disabled=true;
-    setTimeout(function(){ renderGroup(false); paintVault(i); },1800);
-  } else {
-    G.erros++; G.lockUntil=Math.max(G.lockUntil,Date.now()+60000); saveGroup();
-    fb.innerHTML=""; fb.appendChild(el('<div class="note bad">Ainda tem algo errado. Revisem juntos: nova tentativa liberada em 1 minuto.</div>'));
-    tick();
-  }
-}
-
-/* ---------- QR codes ---------- */
-function qrBlock(n){
-  var url=ARTIFACT_URL+"#grupo"+n, svg="";
-  try{
-    if(typeof window.qrcode==="function"){ var q=window.qrcode(0,"M"); q.addData(url); q.make(); svg=q.createSvgTag({cellSize:4,margin:2,scalable:true}); }
-  }catch(e){ svg=""; }
-  return '<div class="qr">'+(svg||'<p class="fallback">'+esc(url)+'</p>')+'<b>Grupo '+n+'</b></div>';
-}
-function qrGrid(count){ var a=[]; for(var n=1;n<=count;n++) a.push(qrBlock(n)); return '<div class="qrs">'+a.join("")+'</div>'; }
-
-/* ---------- Telão ---------- */
-var telaoLocalStart=0;
-function telaoStart(){ if(sessao&&sessao.status==="rodando") return sessao.startAt; return db?0:(telaoLocalStart||0); }
-function renderTelao(){
-  telaoLocalStart=lsGet("salvo-telao-start")||0;
-  app.innerHTML='<div><div class="stripe"></div><main class="wrap" style="max-width:1200px;padding-top:28px">'+
-    '<p class="giant-label">'+REDE+' · ataque previsto para as 6h</p>'+
-    '<div class="giant" id="giant">55:00</div><p class="giant-label" id="giantsub">até o ataque</p>'+
-    '<div id="telaoctl" style="text-align:center;margin-top:16px"></div>'+
-    '<div id="telaoqr"></div><div class="board" id="board"></div></main></div>';
-  updateTelao(); tick();
-}
-function updateTelao(){
-  var started=!!telaoStart();
-  var ctl=document.getElementById("telaoctl"), qr=document.getElementById("telaoqr"), board=document.getElementById("board");
-  if(!ctl) return;
-  if(!db){
-    ctl.innerHTML=telaoLocalStart?'<button class="btn ghost" id="tl-reset">Zerar contagem</button>':'<button class="btn" id="tl-start">Iniciar contagem de 55 min</button>';
-    var a=ctl.querySelector("#tl-start"), b=ctl.querySelector("#tl-reset");
-    if(a) a.onclick=function(){ telaoLocalStart=Date.now(); lsSet("salvo-telao-start",telaoLocalStart); updateTelao(); tick(); };
-    if(b) b.onclick=function(){ telaoLocalStart=0; lsDel("salvo-telao-start"); updateTelao(); tick(); };
-  } else ctl.innerHTML=started?"":'<p class="muted">Aguardando a largada pelo painel da facilitação.</p>';
-  qr.innerHTML=started?"":'<h2 style="text-align:center;margin-top:28px">Escaneiem o QR code do seu grupo</h2>'+qrGrid(5);
-  if(!db){ board.innerHTML=""; return; }
-  board.innerHTML=started?groupRows(false):"";
-}
-function groupRows(detail){
-  var r=rodadaAtual();
-  var nums=[1,2,3,4,5,6].filter(function(n){ return n<=5||(grupos["g"+n]&&grupos["g"+n].rodada===r); });
-  return nums.map(function(n){
-    var g=grupos["g"+n]; if(g&&g.rodada!==r) g=null;
-    var nivel=g?g.nivel:0;
-    var slots=CODE.map(function(c,i){return '<div class="slot'+(i<nivel?' on':'')+'">'+c+'</div>';}).join("");
-    var meta="";
-    if(detail){
-      if(!g) meta='<span class="meta">ainda não entrou</span>';
-      else{
-        var locked=g.lockUntil&&g.lockUntil>Date.now();
-        meta=(nivel>=5?'<span class="badge ok">Concluiu'+(g.concluidoEm&&sessao&&sessao.startAt?' em '+fmt(g.concluidoEm-sessao.startAt):'')+'</span>':'<span class="badge">Nível '+(nivel+1)+'</span>')+
-          (locked?' <span class="badge lock">Bloqueado '+fmt(g.lockUntil-Date.now())+'</span>':'')+
-          ' <span class="meta">'+g.erros+' erro'+(g.erros===1?'':'s')+' · '+g.dicas+' dica'+(g.dicas===1?'':'s')+'</span>';
-      }
-    }
-    return '<div class="row'+(nivel>=5?' done':'')+'"><span class="gname">Grupo '+n+'</span><div class="vault">'+slots+'</div><div class="spacer"></div>'+meta+'</div>';
-  }).join("");
-}
-
-/* ---------- Painel ---------- */
-function renderPainel(){
-  app.innerHTML='<div>'+topBar(false)+'<main class="wrap" style="max-width:1000px">'+
-    '<h1>Painel da facilitação</h1>'+
-    '<div class="giant mid" id="pnclock">55:00</div><p class="giant-label" id="pnsub">até o ataque</p>'+
-    '<div id="pnstatus"></div>'+
-    '<div class="actions" id="pnctl" style="border-top:0;margin-top:8px;padding-top:0;justify-content:center"></div>'+
-    '<div class="board" id="pnboard"></div>'+
-    '<details class="gab" id="pnmsgsbox"><summary>Mensagens do desafio extra</summary><div class="msgs" id="pnmsgs"></div></details>'+
-    '<details class="gab"><summary>QR codes dos grupos</summary>'+qrGrid(6)+'</details>'+
-    '<details class="gab"><summary>Gabarito rápido</summary><ol>'+
-      '<li><b>S:</b> e-mail C; ao menos 3 sinais verdadeiros e nenhum falso (falsos: anexo PDF, domingo, nome da fornecedora).</li>'+
-      '<li><b>A:</b> marcar 1, 2, 4, 6 e 8 e corrigir: 1 senha forte salva e internet desligada; 2 conta desativada; 4 uma conta por pessoa; 6 acesso só com chamado; 8 instalar a 3.4.</li>'+
-      '<li><b>L:</b> marcar não passar o código, ligar pelo número antigo ou central e avisar o plantão; não marcar responder na conversa, foto do crachá e passar o código. Palavra-código é opcional. Ao menos 3 sinais verdadeiros, nenhum falso.</li>'+
-      '<li><b>V:</b> 7 problemas: computador logado, post-it, pen drive, Wi-Fi junto das geladeiras, alarme desligado, backup antigo, visitante sem crachá e sem agendamento. Certos: câmera, extintor, chaves. Aceita 6 de 7 se pen drive e visitante estiverem marcados.</li>'+
-      '<li><b>O:</b> 3 armadilhas no lixo (apagar registros, postar nas redes, caçar quem clicou); desconectar e acionar plantão em Agora; controle manual e registrar em Agora ou Em seguida; avisar em Em seguida; descarte e lições em Depois.</li>'+
-    '</ol></details>'+
-    '<p class="offline">Telão: '+esc(ARTIFACT_URL)+'#telao</p>'+
-  '</main></div>';
-  updatePainel(); tick();
-}
-function updatePainel(){
-  var st=document.getElementById("pnstatus"), ctl=document.getElementById("pnctl"), board=document.getElementById("pnboard"), msgs=document.getElementById("pnmsgs");
-  if(!st) return;
-  if(!db){
-    st.innerHTML='<div class="note hint">Sem conexão com os dados compartilhados nesta tela. O desafio funciona em cada aparelho sozinho, mas o placar ao vivo, a largada sincronizada e as mensagens ficam desligados. Abra o painel, o telão e os grupos logados no claude.ai com uma conta que possa editar este site.</div>';
-    ctl.innerHTML=""; board.innerHTML=""; msgs.innerHTML='<p class="muted">Indisponível sem conexão.</p>'; return;
-  }
-  var running=sessao&&sessao.status==="rodando";
-  st.innerHTML=(running?'':'<p class="lead" style="text-align:center;margin:8px auto 0">Desafio ainda não iniciado. Os grupos podem escanear os QR codes no telão.</p>')+
-    (!dbWritable?'<div class="note bad">Esta conta não pode gravar dados neste site. Use a conta dona do site no painel.</div>':'');
-  ctl.innerHTML=(running?'<button class="btn ghost" id="pn-add">Adicionar 5 min</button>':'<button class="btn" id="pn-start">Dar a largada (55 min)</button>')+'<button class="btn danger" id="pn-reset">Nova rodada (zera tudo)</button>';
-  var s=ctl.querySelector("#pn-start"), a=ctl.querySelector("#pn-add"), r=ctl.querySelector("#pn-reset"), rod=rodadaAtual();
-  if(s) s.onclick=function(){ s.disabled=true; writeDoc("sessao/atual",{status:"rodando",startAt:Date.now(),duracaoMin:DURACAO_PADRAO,rodada:rod}); };
-  if(a) a.onclick=function(){ a.disabled=true; writeDoc("sessao/atual",{status:"rodando",startAt:sessao.startAt,duracaoMin:(sessao.duracaoMin||DURACAO_PADRAO)+5,rodada:rod}); };
-  if(r) r.onclick=function(){
-    if(!confirm("Zerar o cronômetro e o progresso de todos os grupos?")) return;
-    r.disabled=true;
-    writeDoc("sessao/atual",{status:"aguardando",startAt:0,duracaoMin:DURACAO_PADRAO,rodada:rod+1}).then(function(){ return Promise.all([1,2,3,4,5,6].map(function(n){ return deleteDoc("grupos/g"+n); })); });
-  };
-  board.innerHTML=groupRows(true);
-  var list=[1,2,3,4,5,6].map(function(n){ var g=grupos["g"+n]; return (g&&g.rodada===rod&&g.extra)?'<blockquote><b>Grupo '+n+'</b>\n'+esc(g.extra)+'</blockquote>':""; }).join("");
-  msgs.innerHTML=list||'<p class="muted">Nenhuma mensagem ainda.</p>';
-}
-
-/* ---------- Relógio ---------- */
-function setGiant(node,sub,s0,dur){
-  if(!node) return;
-  if(!s0){ node.textContent=fmt(dur); node.classList.remove("hot"); if(sub) sub.textContent="até o ataque"; return; }
-  var rm=s0+dur-Date.now();
-  if(rm<=0){ node.textContent="06:00"; node.classList.add("hot"); if(sub) sub.textContent="hora do ataque"; }
-  else { node.textContent=fmt(rm); node.classList.toggle("hot",rm<5*60000); if(sub) sub.textContent="até o ataque"; }
-}
-var lastTelaoStarted=null;
-function tick(){
-  if(mode==="grupo"&&G){
-    if(viewName()!==currentView){ renderGroup(false); return; }
-    var lm=document.getElementById("lockmsg"), sb=document.getElementById("submit");
-    if(lm&&sb&&!document.querySelector(".note.ok")){
-      var left=G.lockUntil-Date.now();
-      if(left>0){ sb.disabled=true; lm.textContent="Nova tentativa em "+fmt(left); } else { sb.disabled=false; lm.textContent=""; }
-    }
-  } else if(mode==="telao"){
-    var s0=telaoStart();
-    setGiant(document.getElementById("giant"),document.getElementById("giantsub"),s0,duracaoMs());
-    var st=!!s0; if(st!==lastTelaoStarted){ lastTelaoStarted=st; updateTelao(); }
-  } else if(mode==="painel"){
-    setGiant(document.getElementById("pnclock"),document.getElementById("pnsub"),(sessao&&sessao.status==="rodando")?sessao.startAt:0,duracaoMs());
-  }
-}
-setInterval(tick,500);
-setInterval(function(){ if(mode==="painel"&&db){ var b=document.getElementById("pnboard"); if(b) b.innerHTML=groupRows(true); } },5000);
-
-route();
-if(window.claude&&typeof window.claude.use==="function"){
-  window.claude.use("db").then(function(d){ if(!d) return; db=d; subscribe(); route(); }).catch(function(){});
-}
-})();
-</script>
+  <script src="webmail.js"></script>
 </body>
 </html>
