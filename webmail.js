@@ -1,6 +1,12 @@
 // CONFIGURAÇÃO: Define se exibe o destino real do link em telas pequenas/mobile (<= 768px)
 const SHOW_LINK_DESTINATION_ON_MOBILE = true;
 
+//CONFIGURAÇÃO: Define os tempos de espera (em segundos) para o caso de resposta errada ou dica solicitada
+//const lockout_wrong_answer = 30;
+//const lockout_tip = 60;
+const lockout_wrong_answer = 5;
+const lockout_tip = 10;
+
 // DADOS DOS E-MAILS
 const emailsData = {
   1: {
@@ -17,7 +23,8 @@ const emailsData = {
     attachment: "Relatorio.pdf"
   },
   3: {
-    sender: "Suporte FrioTech <suporte@fri0tech-portal.com>",
+    //sender: "Suporte FrioTech <suporte@fri0tech-portal.com>",
+    sender: "suporte@fri0tech-portal.com",
     name: "Suporte FrioTech",
     subject: "URGENTE: seu acesso ao painel expira em 2 horas",
     body: `Prezado cliente,<br><br>Detectamos atividade incomum na sua conta. Para evitar o bloqueio do monitoramento das suas lojas, revalide seu login e senha em até 2 horas:<br><br><a href="#" class="phishing-link" title="https://fri0tech.com.br/acesso">www.friotech.com.br/acesso</a> <span class="mobile-link-destination">&lt;https://fri0tech.com.br/acesso&gt;</span><br><br>Equipe de Suporte`
@@ -143,8 +150,8 @@ sidebarOverlay.addEventListener('click', () => {
 });
 
 // LÓGICA DE BLOQUEIO / TEMPORIZADOR
-function startLockout(seconds) {
-  alertBox.classList.remove('hidden');
+function startLockout(seconds, showAlertBox = false) {
+  if (showAlertBox) alertBox.classList.remove('hidden');   
   timerText.classList.remove('hidden');
   
   btnSubmitStep1.disabled = true;
@@ -178,7 +185,7 @@ btnSubmitStep1.addEventListener('click', () => {
     step2.classList.remove('hidden');
   } else {
     // Errou o e-mail -> Penalidade de 30s
-    startLockout(30);
+    startLockout(lockout_wrong_answer, true); 
   }
 });
 
@@ -196,10 +203,11 @@ btnSubmitStep2.addEventListener('click', () => {
 
   if (isCorrect) {
     alertBox.classList.add('hidden');
-    alert("Resposta Correta!");
+    //alert("Resposta Correta!");
+    window.location.href = 'social.html';
   } else {
     // Resposta incorreta -> Penalidade de 30s
-    startLockout(30);
+    startLockout(lockout_wrong_answer, true);
   }
 });
 
@@ -216,7 +224,7 @@ btnTip.addEventListener('click', () => {
     }
 
     // Aplica bloqueio de 1 minuto (60s)
-    startLockout(60);
+    startLockout(lockout_tip);
   }
 });
 

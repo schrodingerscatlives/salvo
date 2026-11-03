@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oficina Phishing - Rede Mangue</title>
+  <link rel="stylesheet" href="main.css">
+</head>
+<body>
+
+<!-- SEÇÃO DA DESCRIÇÃO E TÍTULO DO NÍVEL (ACIMA DO WEBMAIL) -->
+<section class="pedagogical-section">
+    <!-- CABEÇALHO DO DESAFIO (NÍVEL E DESCRIÇÃO) -->
+    <div class="challenge-header">
+    <div class="challenge-level">Nível 1 de 5 · Phishing</div>
+    <h2 class="challenge-title">O e-mail isca</h2>
+    <p class="challenge-description">
+        Estes eram os e-mails presentes ontem na caixa de entrada do gerente Paulo. Uma destas mensagens foi a responsável por entregar a senha dele aos hackers. Descubram qual e marquem os sinais que denunciam o golpe.
+    </p>
+    </div>        
+</section>
+
+  <!-- SIMULADOR DE WEBMAIL -->
+  <div class="webmail-container">
+    
+    <!-- BARRA SUPERIOR MOBILE (Aparece apenas em telas pequenas) -->
+    <header class="mobile-header">
+      <button id="toggle-sidebar-btn" class="btn-icon" aria-label="Abrir menu">☰</button>
+      <div class="brand">
+        <div class="logo">M</div>
+        <div>
+          <h1 class="brand-title">MangueMail</h1>
+          <p class="brand-sub">REDE MANGUE MERCADOS</p>
+        </div>
+      </div>
+    </header>
+
+    <div class="webmail-body">
+      <!-- OVERLAY DE FUNDO PARA MENU MOBILE -->
+      <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+      <!-- PAINEL LATERAL / NAVEGAÇÃO DE PASTAS -->
+      <aside class="sidebar" id="sidebar">
+        <div class="brand desktop-only">
+          <div class="logo">M</div>
+          <div>
+            <h1 class="brand-title">MangueMail</h1>
+            <p class="brand-sub">REDE MANGUE MERCADOS</p>
+          </div>
+        </div>
+
+        <button class="btn-compose">✏️ Escrever</button>
+
+        <nav class="folder-list">
+          <a href="#" class="folder-item active">
+            <span>📥 Caixa de Entrada</span>
+            <span class="badge">4</span>
+          </a>
+          <a href="#" class="folder-item"><span>🚀 Enviados</span></a>
+          <a href="#" class="folder-item"><span>📄 Rascunhos</span></a>
+          <a href="#" class="folder-item"><span>⚠️ Spam</span></a>
+          <a href="#" class="folder-item"><span>🗑️ Lixeira</span></a>
+        </nav>
+      </aside>
+
+      <!-- LISTA DE E-MAILS -->
+      <section class="email-list-section" id="email-list-section">
+        <div class="section-title">CAIXA DE ENTRADA</div>
+        
+        <div class="email-item active" data-id="1">
+          <div class="email-indicator"></div>
+          <div class="email-item-content">
+            <div class="email-sender">Equipe de TI</div>
+            <div class="email-subject">Lembrete: treinamento de segurança na quinta</div>
+            <div class="email-preview">Olá, equipe. Lembrando que o treinamento de segurança da informação...</div>
+          </div>
+        </div>
+
+        <div class="email-item" data-id="2">
+          <div class="email-indicator"></div>
+          <div class="email-item-content">
+            <div class="email-sender">Carla Mendes - FrioTech</div>
+            <div class="email-subject">Boletim trimestral de manutenção</div>
+            <div class="email-preview">Prezado Paulo, o relatório de manutenção do 3º trimestre das 40 lojas...</div>
+          </div>
+        </div>
+
+        <div class="email-item" data-id="3">
+          <div class="email-indicator"></div>
+          <div class="email-item-content">
+            <div class="email-sender">Suporte FrioTech</div>
+            <div class="email-subject">URGENTE: seu acesso ao painel expira em 2 horas</div>
+            <div class="email-preview">Prezado cliente, Detectamos atividade incomum na sua conta...</div>
+          </div>
+        </div>
+
+        <div class="email-item" data-id="4">
+          <div class="email-indicator"></div>
+          <div class="email-item-content">
+            <div class="email-sender">Recursos Humanos</div>
+            <div class="email-subject">Holerite de outubro disponível</div>
+            <div class="email-preview">Olá! O holerite de outubro já pode ser consultado no Portal do RH...</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTEÚDO DO E-MAIL SELECIONADO -->
+      <main class="email-viewer" id="email-viewer">
+        <!-- Botão Voltar para mobile -->
+        <button id="back-to-list-btn" class="back-btn">← Voltar para a Caixa de Entrada</button>
+        
+        <div id="email-content-area">
+          <!-- Conteúdo dinâmico renderizado via webmail.js -->
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- SEÇÃO DA OFICINA PEDAGÓGICA (ABAIXO DO WEBMAIL) -->
+  <section class="pedagogical-section">
+        
+    <div id="tip-box" class="tip-box hidden"></div>
+    <div id="alert-box" class="alert-box hidden">Hm... Ainda tem algo errado.</div>
+    <div id="timer-text" class="timer-text hidden">Nova tentativa em <span id="timer-seconds">30</span> s.</div>
+
+    <!-- ETAPA 1 -->
+    <div id="step-1" class="quiz-step">
+      <!-- <h3 class="step-title">Desafio - Etapa 1</h3>  -->
+      <p class="step-desc">Selecione o e-mail suspeito na Caixa de Entrada acima e clique no botão para submeter sua análise.</p>
+      <!-- CONTAINER DE BOTÕES LADO A LADO -->
+      <div class="actions-row">
+        <button id="btn-tip" class="btn-tip">💡 Exibir Dica</button>
+        <button id="btn-submit-step1" class="btn-action">Submeter</button>
+      </div>
+    </div>
+
+    <!-- ETAPA 2 (REVELADA APÓS ACERTAR A ISCA) -->
+    <div id="step-2" class="quiz-step hidden">
+      <h3 class="step-title">Quais sinais denunciam o golpe?</h3>
+      <div class="checkbox-group">
+        <label class="checkbox-item"><input type="checkbox" value="a"> O endereço do remetente imita o da fornecedora;</label>
+        <label class="checkbox-item"><input type="checkbox" value="b"> Urgência: o acesso “expira em 2 horas”;</label>
+        <label class="checkbox-item"><input type="checkbox" value="c"> Pede para digitar login e senha;</label>
+        <label class="checkbox-item"><input type="checkbox" value="d"> O link mostra um endereço e leva para outro;</label>
+        <label class="checkbox-item"><input type="checkbox" value="e"> Saudação genérica: “Prezado cliente”;</label>
+        <label class="checkbox-item"><input type="checkbox" value="f"> Traz um anexo em PDF;</label>
+        <label class="checkbox-item"><input type="checkbox" value="g"> Foi enviado em um domingo;</label>
+        <label class="checkbox-item"><input type="checkbox" value="h"> Menciona o nome da fornecedora;</label>
+      </div>
+      <button id="btn-submit-step2" class="btn-action">Enviar Resposta</button>
+    </div>
+  </section>
+
+  <script src="webmail.js"></script>
+</body>
+</html>

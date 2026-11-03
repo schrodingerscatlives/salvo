@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Console FrioTech - Nível 3</title>
+  <link rel="stylesheet" href="main.css">
+</head>
+<body>
+
+  <!-- SEÇÃO DA DESCRIÇÃO E TÍTULO DO NÍVEL -->
+  <section class="pedagogical-section">
+    <div class="challenge-header">
+      <div class="challenge-level">Nível 3 de 5 · Senhas, acessos e atualizações</div>
+      <h2 class="challenge-title">A porta aberta</h2>
+      <p class="challenge-description">
+        Com a senha do Paulo, os hackers vão circular pelo painel da FrioTech. Este é o console de acessos. Marquem cada risco e, no próprio console, façam a correção.
+      </p>
+    </div>
+  </section>
+
+<!-- SIMULADOR DO PORTAL FRIOTECH -->
+  <div class="portal-container">
+    
+    <!-- BARRA SUPERIOR (HEADER) -->
+    <header class="portal-header">
+      <div class="header-left">
+        <button id="toggle-portal-sidebar-btn" class="btn-icon-portal" aria-label="Abrir menu">☰</button>
+        <div class="portal-brand">
+          <span class="portal-icon">❄️</span>
+          <div>
+            <h1 class="portal-title">FrioTech Control</h1>
+            <p class="portal-sub">SISTEMA DE REFRIGERAÇÃO INDUSTRIAL</p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="portal-body">
+      <!-- OVERLAY DE FUNDO PARA MENU MOBILE -->
+      <div id="portal-sidebar-overlay" class="portal-sidebar-overlay"></div>
+
+      <!-- MENU LATERAL (ESTILO ROTEADOR) -->
+      <aside class="portal-sidebar" id="portal-sidebar">
+        <nav class="portal-menu">
+          <!-- MENU DASHBOARD -->
+          <a href="#" class="menu-item active" data-target="view-dashboard">
+            <span>📊 Dashboard</span>
+          </a>
+
+          <!-- GRUPO GESTÃO DE USUÁRIOS (NÃO CLICÁVEL) -->
+          <div class="menu-group">
+            <div class="menu-group-label">👥 Gestão de Usuários</div>
+            <div class="menu-subitems">
+              <a href="#" class="sub-item" data-user-index="0"><span>admin</span></a>
+              <a href="#" class="sub-item" data-user-index="1"><span>joao.silva</span></a>
+              <a href="#" class="sub-item" data-user-index="2"><span>maria.costa</span></a>
+              <a href="#" class="sub-item" data-user-index="3"><span>manut.loja12</span></a>
+              <a href="#" class="sub-item" data-user-index="4"><span>relatorio.auto</span></a>
+              <a href="#" class="sub-item" data-user-index="5"><span>friotech.suporte</span></a>
+              <a href="#" class="sub-item" data-user-index="6"><span>carlos.lima</span></a>
+            </div>
+          </div>
+
+          <!-- MENU MANUTENÇÃO -->
+          <a href="#" class="menu-item" data-target="view-maintenance">
+            <span>⚙️ Manutenção</span>
+          </a>
+        </nav>
+      </aside>
+
+      <!-- ÁREA DE CONTEÚDO À DIREITA -->
+      <main class="portal-main-content">
+        
+        <!-- TELA 1: DASHBOARD (CARDS DAS LOJAS 01 A 12 + ALARMES) -->
+        <section id="view-dashboard" class="portal-view">
+          <h3 class="view-title">Painel de Monitoramento Geral</h3>
+          <p class="view-subtitle">Status em tempo real das câmaras frias da Rede Mangue Mercados.</p>
+
+          <!-- CARD DE ALARMES EM DESTAQUE -->
+          <div class="alarm-banner">
+            <span class="alarm-icon">🟢​</span>
+            <div>
+              <strong>Central de Alarmes:</strong> Monitoramento Ativo em todas as 12 unidades.
+            </div>
+          </div>
+
+          <!-- GRID DAS 12 LOJAS -->
+          <div class="stores-grid" id="stores-grid">
+            <!-- Gerado via JS de 01 a 12 -->
+          </div>
+        </section>
+
+        <!-- TELA 2: USUÁRIO SELECIONADO -->
+        <section id="view-user" class="portal-view hidden">
+          <!-- Conteúdo do card do usuário selecionado via JS -->
+        </section>
+
+        <!-- TELA 3: MANUTENÇÃO DO SISTEMA -->
+        <section id="view-maintenance" class="portal-view hidden">
+          <div class="maintenance-card">
+            <h3>Informações da Versão do Painel</h3>
+            
+            <div class="version-info-box">
+              <div class="version-row">
+                <span class="label">Versão Atual Instalada:</span>
+                <span class="version-badge legacy" id="current-version-text">v2.4.12-build89</span>
+              </div>
+              
+              <div id="update-notice" class="update-notice">
+                <div class="update-header">
+                  <span class="alert-icon">⚠️</span>
+                  <strong>Nova Atualização Disponível (Há 70 dias)</strong>
+                </div>
+                <p class="update-desc">
+                  <strong>Versão v3.0.0:</strong> Correção de falhas críticas de autenticação e elevação de privilégios, otimização no tempo de resposta dos sensores e novos relatórios de log.
+                </p>
+                
+                <button id="btn-update-system" class="btn-update">🚀 Atualizar Painel Agora</button>
+
+                <div id="progress-container" class="progress-container hidden">
+                  <div class="progress-label">Baixando e instalando atualização... <span id="progress-percent">0%</span></div>
+                  <div class="progress-track">
+                    <div id="progress-bar" class="progress-bar"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div id="system-updated-msg" class="system-updated-msg hidden">
+                ✅ O painel de controle está na versão mais recente (v3.0.0). Todas as correções críticas foram aplicadas!
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>  
+
+  <!-- SEÇÃO PEDAGÓGICA DA OFICINA (RODAPÉ) -->
+  <section class="pedagogical-section">
+    <div id="tip-box" class="tip-box hidden"></div>
+    <div id="alert-box" class="alert-box hidden">Hm... Ainda tem algo errado. Revisem juntos.</div>
+    <div id="timer-text" class="timer-text hidden">Nova tentativa em <span id="timer-seconds">30</span> s.</div>
+
+    <div id="step-panel" class="quiz-step">
+      <p class="step-desc">Ajustem o console corrigindo os riscos de segurança identificados e cliquem no botão abaixo para validar.</p>
+      <div class="actions-row">
+        <button id="btn-tip" class="btn-tip">💡 Exibir Dica</button>
+        <button id="btn-submit" class="btn-action">Submeter</button>
+      </div>
+    </div>
+  </section>
+
+  <script src="painel.js"></script>
+</body>
+</html>

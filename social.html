@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oficina Phishing - Nível 2</title>
+  <link rel="stylesheet" href="main.css">
+</head>
+<body>
+
+  <!-- SEÇÃO DA DESCRIÇÃO E TÍTULO DO NÍVEL -->
+  <section class="pedagogical-section">
+    <div class="challenge-header">
+      <div class="challenge-level">Nível 2 de 5 · Engenharia Social</div>
+      <h2 class="challenge-title">A mensagem do chefe</h2>
+      <p class="challenge-description">
+        Estas são as mensagens presentes no aplicativo de mensagens instantâneas do Paulo. Identifique a conversa responsável por entregar o acesso do painel aos hackers.
+      </p>
+    </div>
+  </section>
+
+  <!-- SIMULADOR DE MENSAGENS (ESTILO WHATSAPP) -->
+  <div class="zap-container">
+    <div class="zap-body" id="zap-body">
+      
+      <!-- COLUNA DA ESQUERDA: LISTA DE CONVERSAS -->
+      <aside class="chat-list-section" id="chat-list-section">
+        <div class="chat-list-header">
+          <!--   
+          <div class="user-avatar-main">
+            <img src="images/avatar/avatar_0.png" alt="Paulo" onerror="this.src='https://via.placeholder.com/40'">
+          </div>
+          -->
+          <span class="chat-header-title">Conversas</span>
+        </div>
+
+        <div class="chat-list-items" id="chat-list-items">
+          <!-- Lista de conversas injetada via JS -->
+        </div>
+      </aside>
+
+      <!-- COLUNA DA DIREITA: ÁREA DO CHAT -->
+      <main class="chat-viewer" id="chat-viewer">
+        
+        <!-- CABEÇALHO DO CHAT -->
+        <div class="chat-header">
+          <button id="back-to-chats-btn" class="zap-back-btn" aria-label="Voltar">←</button>
+          <div class="chat-header-avatar">
+            <img id="chat-header-img" src="images/avatar/avatar_1.png" alt="Avatar" onerror="this.src='https://via.placeholder.com/40'">
+          </div>
+          <div class="chat-header-info">
+            <div id="chat-header-name" class="chat-header-name">Nome</div>
+            <div id="chat-header-status" class="chat-header-status">online</div>
+          </div>
+        </div>
+
+        <!-- ÁREA DE MENSAGENS -->
+        <div class="chat-messages-area" id="chat-messages-area">
+          <!-- Mensagens renderizadas via JS -->
+        </div>
+
+        <!-- BARRA INFERIOR SIMULADA -->
+        <div class="chat-input-bar">
+          <input type="text" placeholder="Mensagem" disabled>
+        </div>
+      </main>
+
+    </div>
+  </div>
+
+  <!-- SEÇÃO DA OFICINA PEDAGÓGICA (RODAPÉ) -->
+  <section class="pedagogical-section">
+    <div id="tip-box" class="tip-box hidden"></div>
+    <div id="alert-box" class="alert-box hidden">Hm... Ainda tem algo errado. Revisem juntos.</div>
+    <div id="timer-text" class="timer-text hidden">Nova tentativa em <span id="timer-seconds">30</span> s.</div>
+
+    <!-- ETAPA 1 -->
+    <div id="step-1" class="quiz-step">
+      <p class="step-desc">Selecione a conversa suspeita no aplicativo acima e clique no botão para submeter sua análise.</p>
+      <div class="actions-row">
+        <button id="btn-tip" class="btn-tip">💡 Exibir Dica</button>
+        <button id="btn-submit-step1" class="btn-action">Submeter</button>
+      </div>
+    </div>
+
+    <!-- ETAPA 2 (REVELADA APÓS ACERTAR A CONVERSA ISCA) -->
+    <div id="step-2" class="quiz-step hidden">
+      <h3 class="step-title">O que Paulo poderia fazer?</h3>
+      <div class="checkbox-group">
+        <label class="checkbox-item"><input type="checkbox" value="a"> Não passar o código para ninguém;</label>
+        <label class="checkbox-item"><input type="checkbox" value="b"> Responder na conversa perguntando se é ela mesmo;</label>
+        <label class="checkbox-item"><input type="checkbox" value="c"> Ligar para o número antigo da Ana ou para a central oficial;</label>
+        <label class="checkbox-item"><input type="checkbox" value="d"> Pedir que mande foto do crachá pelo WhatsApp;</label>
+        <label class="checkbox-item"><input type="checkbox" value="e"> Avisar ao plantão de TI ou de segurança;</label>
+        <label class="checkbox-item"><input type="checkbox" value="f"> Passar o código, porque trata-se da foto da diretora Ana;</label>
+        <label class="checkbox-item"><input type="checkbox" value="g"> Combinar com a diretoria uma palavra-código para pedidos urgentes;</label>
+      </div>
+      <div class="actions-row">
+        <button id="btn-submit-step2" class="btn-action">Enviar respostas</button>
+      </div>
+    </div>
+  </section>
+
+  <script src="social.js"></script>
+</body>
+</html>
