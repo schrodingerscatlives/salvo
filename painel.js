@@ -34,6 +34,19 @@ const usersData = [
     password: "admin"
   },
   {
+    id: "paulo.santos",
+    name: "paulo.santos",
+    mfa: false,
+    active: true,
+    readOnly: false,
+    remote: true,
+    log: false,
+    role: "Gerente",
+    email: "paulo.santos@redemangue.com.br",
+    obs: "",
+    password: "mangue@2026"
+  },
+  {
     id: "joao.silva",
     name: "joao.silva",
     mfa: false,
@@ -70,7 +83,7 @@ const usersData = [
     role: "Manutenção",
     email: "loja12@redemangue.com.br",
     obs: "Conta utilizada pelos seis gerentes da loja 12.",
-    password: "Loja12@2019"
+    password: "abcd@1234"
   },
   {
     id: "relatorio.auto",
@@ -372,7 +385,15 @@ function startLockout(seconds, showAlertBox = false) {
   btnSubmit.disabled = true;
   btnTip.disabled = (currentTipIndex >= tips.length);
 
-  let remaining = seconds;
+  // Obtém os segundos que ainda restam no contador (ou 0 se não houver tempo ativo)
+  const currentRemaining = parseInt(timerSeconds.textContent, 10) || 0;  
+
+  //let remaining = seconds; //antes so atribuia, mas agora deve incrementar a penalidade
+  // Se o alerta ainda estiver visível/ativo, incrementa o tempo restante com a nova penalidade
+  let remaining = (!timerText.classList.contains('hidden') && currentRemaining > 0)
+    ? currentRemaining + seconds
+    : seconds;  
+      
   timerSeconds.textContent = remaining;
 
   if (timerInterval) clearInterval(timerInterval);
@@ -408,7 +429,8 @@ btnSubmit.addEventListener('click', () => {
 
   if (isCorrect) {
     alertBox.classList.add('hidden');
-    alert("Resposta correta!");
+    //alert("Resposta correta!");
+    window.location.href = 'office.html';
   } else {
     startLockout(lockout_wrong_answer, true);
   }

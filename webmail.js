@@ -157,7 +157,15 @@ function startLockout(seconds, showAlertBox = false) {
   btnSubmitStep1.disabled = true;
   btnSubmitStep2.disabled = true;
 
-  let remaining = seconds;
+  // Obtém os segundos que ainda restam no contador (ou 0 se não houver tempo ativo)
+  const currentRemaining = parseInt(timerSeconds.textContent, 10) || 0;  
+
+  //let remaining = seconds; //antes so atribuia, mas agora deve incrementar a penalidade
+  // Se o alerta ainda estiver visível/ativo, incrementa o tempo restante com a nova penalidade
+  let remaining = (!timerText.classList.contains('hidden') && currentRemaining > 0)
+    ? currentRemaining + seconds
+    : seconds;  
+    
   timerSeconds.textContent = remaining;
 
   if (timerInterval) clearInterval(timerInterval);

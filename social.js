@@ -13,7 +13,7 @@ const chatsData = [
     messages: [
       { type: "R", time: "10:33", text: "Bom dia Paulo! Tou com um problema na minha estação e não tou conseguindo abrir chamado no portal" },
       { type: "R", time: "10:34", text: "Entra com meu usuário e registra um chamado pra impressora da operação, por gentileza" },
-      { type: "R", time: "10:34", text: "anasilva mangue@2026" },
+      { type: "R", time: "10:34", text: "anaalves mangue@2026" },
       { type: "D", time: "10:38", text: "Bom dia Ana, abro sim" },
       { type: "D", time: "10:40", text: "2026031105487" },
       { type: "D", time: "10:40", text: "Feito" },
@@ -24,7 +24,7 @@ const chatsData = [
     id: 2,
     avatar: "images/avatar/avatar_2.png",
     name: "Marcos TI",
-    when: "Hoje",
+    when: "Ontem",
     messages: [
       { type: "R", time: "08:15", text: "Paulo, os servidores das lojas 04 e 08 vão passar por reinício rápido às 12h." },
       { type: "D", time: "08:20", text: "Tranquilo Marcos, aviso os gerentes das unidades." },
@@ -44,7 +44,7 @@ const chatsData = [
   {
     id: 4,
     avatar: "images/avatar/avatar_4.png",
-    name: "+55 81 91236-5478 ~Ana Diretora",
+    name: "+55 81 91236-5478 ~Ana Alves",
     when: "Hoje",
     messages: [
       { type: "R", time: "21:52", text: "Paulo, é a Ana. Tou no aeroporto, celular quase sem bateria. Troquei de chip. Salva esse número novo por gentileza." },
@@ -226,7 +226,15 @@ function startLockout(seconds, showAlertBox = false) {
   btnSubmitStep2.disabled = true;
   btnTip.disabled = (currentTipIndex >= tips.length);
 
-  let remaining = seconds;
+  // Obtém os segundos que ainda restam no contador (ou 0 se não houver tempo ativo)
+  const currentRemaining = parseInt(timerSeconds.textContent, 10) || 0;  
+
+  //let remaining = seconds; //antes so atribuia, mas agora deve incrementar a penalidade
+  // Se o alerta ainda estiver visível/ativo, incrementa o tempo restante com a nova penalidade
+  let remaining = (!timerText.classList.contains('hidden') && currentRemaining > 0)
+    ? currentRemaining + seconds
+    : seconds;  
+    
   timerSeconds.textContent = remaining;
 
   if (timerInterval) clearInterval(timerInterval);

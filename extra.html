@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oficina Anti-Phishing - Conclusão</title>
+  <link rel="stylesheet" href="main.css">
+  <!-- Biblioteca para animação de confetes -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+  <!-- SEÇÃO DE CONCLUSÃO (SUCESSO) -->
+  <section class="pedagogical-section conclusion-screen">
+    <div class="welcome-container">
+      <span class="welcome-badge success-badge">🎉 Desafio Concluído com Sucesso!</span>
+      
+      <h1 class="welcome-title">Crise Evitada</h1>
+
+      <div class="welcome-story-card success-card">
+        <p class="story-text highlight-text">
+          Às 6h as geladeiras da Rede Mangue Mercados estavam a 2 °C. Ninguém soube que houve uma tentativa de ataque: é assim que a prevenção funciona.
+        </p>
+      </div>
+
+      <!-- SEÇÃO DESAFIO EXTRA (COMUNICADO) -->
+      <div class="extra-challenge-box">
+        <h2 class="extra-title">📝 Desafio Extra</h2>
+        <p class="extra-desc">
+          O ataque foi contido, mas a governança e a conscientização continuam. Agora, coloque-se no papel do Comitê de Crise e da Diretoria: redija o comunicado oficial que deverá ser enviado a todos do time Rede Mangue amanhã cedo.
+        </p>
+        <p class="extra-desc">
+          Sua mensagem precisa ser clara e equilibrada, cobrindo três pontos fundamentais:
+        </p>
+        
+        <ol class="points-list">
+          <li><strong>Transparência:</strong> Explicar brevemente o que aconteceu, reforçando que os sistemas e as mercadorias estão seguros.</li>
+          <li><strong>Alinhamento:</strong> Orientar sobre como proceder caso clientes ou pessoas externas façam perguntas sobre o ocorrido (política de porta-voz único).</li>
+          <li><strong>Cultura de Segurança:</strong> Relembrar as boas práticas cotidianas que cada funcionário deve seguir a partir de agora para evitar novas brechas.</li>
+        </ol>
+
+        <div class="field-group margin-top">
+          <textarea id="txt-comunicado" class="txt-comunicado" placeholder="Equipe Mangue, bom dia! ..."></textarea>
+        </div>
+
+        <!--
+        <div class="actions-row margin-top">
+          <button id="btn-finish" class="btn-action">Concluir Exercício 🏁</button>
+        </div>
+        -->
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // DISPARO DA ANIMAÇÃO DE CONFETES AO CARREGAR A PÁGINA (DURAÇÃO: 3 SEGUNDOS)
+    window.addEventListener('DOMContentLoaded', () => {
+      const duration = 3 * 1000;
+      const animationEnd = Date.now() + duration;
+
+      const interval = setInterval(function() {
+        const timeLeft = animationEnd - Date.now();
+
+        if (timeLeft <= 0) {
+          return clearInterval(interval);
+        }
+
+        const particleCount = 50 * (timeLeft / duration);
+        
+        // Dispara confetes de ambos os lados da tela
+        confetti({
+          particleCount: particleCount,
+          startVelocity: 30,
+          spread: 360,
+          origin: { x: Math.random(), y: Math.random() - 0.2 }
+        });
+      }, 250);
+    });
+
+    // AÇÃO DO BOTÃO DE CONCLUSÃO
+    /*
+    document.getElementById('btn-finish').addEventListener('click', function() {
+      const text = document.getElementById('txt-comunicado').value.trim();
+      if (text.length < 20) {
+        alert("Por favor, redija o comunicado com os três pontos solicitados antes de finalizar!");
+      } else {
+        alert("Comunicado registrado com sucesso! Parabéns pelo excelente trabalho na gestão de crise.");
+      }
+    });
+    */
+  </script>
+</body>
+</html>

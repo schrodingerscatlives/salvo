@@ -1189,8 +1189,8 @@ body {
   cursor: pointer;
 }
 
-.chat-header-name { font-weight: bold; font-size: 15px; }
-.chat-header-subname { font-size: 12px; opacity: 0.8; font-weight: normal; }
+.chat-header-name { font-weight: bold; font-size: 14px; line-height: 1.2; }
+.chat-header-subname { display: block; font-size: 11px; opacity: 0.8; font-weight: normal; margin-top: 1px; }
 .chat-header-status { font-size: 11px; opacity: 0.8; }
 
 .chat-messages-area {
@@ -1363,6 +1363,31 @@ body {
   line-height: 1.5;
 }
 
+/* Estilização geral dos links de fontes */
+.real-case-box a {
+    display: inline-block;
+    color: #ffcc00; /* Um amarelo/dourado que combina com o seu ícone de alerta */
+    text-decoration: none; /* Remove o sublinhado azul padrão */
+    font-weight: 500;
+    margin-top: 8px;
+    padding: 6px 12px;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.05); /* Um fundo sutil para destacar */
+    transition: all 0.3s ease; /* Transição suave para os efeitos abaixo */
+}
+
+/* Efeito ao passar o mouse (Hover) */
+.real-case-box a:hover {
+    color: #ffffff; /* O texto muda para branco */
+    background-color: #ffcc00; /* O fundo assume a cor dourada */
+    transform: translateX(4px); /* Um leve movimento para a direita */
+}
+
+/* Efeito após o link já ter sido clicado (opcional) */
+.real-case-box a:visited {
+    color: #e6b800; /* Mantém um tom de dourado ligeiramente mais escuro */
+}
+
 .real-case-title {
   font-weight: bold;
   color: #fbbf24;
@@ -1436,5 +1461,309 @@ body {
 
   .story-text {
     font-size: 14px;
+  }
+}
+
+
+
+
+
+
+
+/* ===================================================
+   ESTILOS DA SIMULAÇÃO DO ESCRITÓRIO (NÍVEL 4)
+   =================================================== */
+.office-simulation-container {
+  background-color: #ffffff;
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.office-image-wrapper {
+  max-width: 900px;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: #f3f4f6;
+}
+
+.office-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+/* ORGANIZAÇÃO DOS CHECKBOXES EM DUAS COLUNAS NO DESKTOP */
+.grid-checkboxes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 10px 16px;
+  margin-top: 8px;
+}
+
+@media (max-width: 768px) {
+  .office-simulation-container {
+    padding: 8px;
+  }
+  
+  .grid-checkboxes {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+
+
+
+
+
+
+/* ===================================================
+   ESTILOS DA SIMULAÇÃO DE TIERLIST (NÍVEL 5)
+   =================================================== */
+.tierlist-simulation-container {
+  background-color: #0f172a;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+/* CONTAINER DOS CARDS PENDENTES */
+.cards-pool-wrapper {
+  background-color: #1e293b;
+  border: 1px dashed #475569;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.cards-pool-header {
+  font-size: 13px;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+}
+
+.cards-pool {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  min-height: 60px;
+  align-items: flex-start;
+}
+
+/* GRID DE COLUNAS DA TIERLIST */
+.tierlist-columns-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.tierlist-column {
+  background-color: #1e293b;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid #334155;
+}
+
+.column-header {
+  padding: 12px 16px;
+  color: #ffffff;
+  text-align: center;
+}
+
+.column-header h3 {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.column-header .sub-header {
+  font-size: 11px;
+  opacity: 0.9;
+  display: block;
+  margin-top: 2px;
+}
+
+.header-alta { background-color: #dc2626; }     /* Vermelho */
+.header-media { background-color: #d97706; }    /* Laranja */
+.header-descartar { background-color: #475569; }/* Cinza */
+
+.column-cards {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 220px;
+  flex: 1;
+}
+
+.column-cards.drag-over, .cards-pool.drag-over {
+  background-color: rgba(56, 189, 248, 0.15);
+  outline: 2px dashed #38bdf8;
+}
+
+/* ESTILO DO CARD */
+.tier-card {
+  background-color: #ffffff;
+  color: #1e293b;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+  cursor: grab;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  user-select: none;
+  transition: transform 0.15s, box-shadow 0.15s, border 0.15s;
+}
+
+.tier-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.tier-card:active {
+  cursor: grabbing;
+}
+
+.tier-card.dragging {
+  opacity: 0.4;
+}
+
+/* CARD SELECIONADO VIA CLIQUE */
+.tier-card.selected {
+  outline: 3px solid #38bdf8;
+  background-color: #f0f9ff;
+}
+
+/* RESPONSIVIDADE MOBILE DA TIERLIST */
+@media (max-width: 900px) {
+  .tierlist-columns-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .column-cards {
+    min-height: 120px;
+  }
+
+  .tierlist-simulation-container {
+    padding: 12px;
+  }
+}
+
+
+
+
+
+
+
+
+
+/* ===================================================
+   ESTILOS DA PÁGINA DE CONCLUSÃO (EXTRA.HTML)
+   =================================================== */
+.conclusion-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  box-sizing: border-box;
+}
+
+.success-badge {
+  background-color: rgba(16, 185, 129, 0.25) !important;
+  color: #6ee7b7 !important;
+  border-color: #10b981 !important;
+}
+
+.success-card {
+  border-left-color: #10b981 !important;
+  background: rgba(16, 185, 129, 0.08) !important;
+}
+
+.highlight-text {
+  font-size: 18px !important;
+  font-weight: 600;
+  color: #ecfdf5 !important;
+  line-height: 1.5;
+}
+
+.extra-challenge-box {
+  background-color: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 24px;
+  border-radius: 10px;
+  margin-top: 24px;
+}
+
+.extra-title {
+  font-size: 20px;
+  color: #38bdf8;
+  margin-bottom: 12px;
+}
+
+.extra-desc {
+  font-size: 14px;
+  color: #c7d2fe;
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.points-list {
+  margin-left: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+  color: #e0e7ff;
+}
+
+.points-list li strong {
+  color: #a7f3d0;
+}
+
+.txt-comunicado {
+  width: 100%;
+  min-height: 160px;
+  background-color: rgba(255, 255, 255, 0.95);
+  border: 2px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 14px;
+  font-size: 14px;
+  color: #0f172a;
+  line-height: 1.5;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.txt-comunicado:focus {
+  outline: none;
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.3);
+}
+
+@media (max-width: 768px) {
+  .conclusion-screen {
+    padding: 16px 8px;
+  }
+  
+  .extra-challenge-box {
+    padding: 16px;
+  }
+
+  .highlight-text {
+    font-size: 16px !important;
   }
 }

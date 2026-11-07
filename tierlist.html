@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oficina Anti-Phishing - Nível 5</title>
+  <link rel="stylesheet" href="main.css">
+</head>
+<body>
+
+  <!-- SEÇÃO DA DESCRIÇÃO E TÍTULO DO NÍVEL -->
+  <section class="pedagogical-section">
+    <div class="challenge-header">
+      <div class="challenge-level">Nível 5 de 5 · Resposta a incidente</div>
+      <h2 class="challenge-title">Nenhum sistema é 100% infalível</h2>
+      <p class="challenge-description">
+        Mesmo que uma organização adote as melhores práticas de segurança da informação e governança de dados, vulnerabilidades ocultas, falhas de terceiros ou novas táticas de ataque podem ser exploradas, resultando em um incidente de segurança. Quando o pior acontece, o tempo é o recurso mais precioso. É necessário então seguir um plano de ação estruturado para conter o dano, mitigar os riscos e garantir a conformidade legal imediata.
+      </p>
+    </div>
+  </section>
+
+  <!-- SEÇÃO DE SIMULAÇÃO (TIERLIST) -->
+  <div class="tierlist-simulation-container">
+    
+    <!-- ÁREA DE CARDS DISPONÍVEIS -->
+    <div class="cards-pool-wrapper">
+      <!-- <div class="cards-pool-header">Cards Pendentes de Classificação (Clique ou Arraste)</div> -->
+      <div id="cards-pool" class="cards-pool drop-zone" data-col="pool">
+        <!-- Cards injetados via JS -->
+      </div>
+    </div>
+
+    <!-- COLUNAS DA TIERLIST -->
+    <div class="tierlist-columns-grid">
+      
+      <!-- COLUNA 1: ALTA PRIORIDADE -->
+      <div class="tierlist-column col-alta" data-col="alta">
+        <div class="column-header header-alta">
+          <h3>Ações Imediatas</h3>
+          <span class="sub-header">(Alta Prioridade)</span>
+        </div>
+        <div class="column-cards drop-zone" data-col="alta" id="col-alta"></div>
+      </div>
+
+      <!-- COLUNA 2: MÉDIA PRIORIDADE -->
+      <div class="tierlist-column col-media" data-col="media">
+        <div class="column-header header-media">
+          <h3>Ações de Segundo Momento</h3>
+          <span class="sub-header">(Média Prioridade)</span>
+        </div>
+        <div class="column-cards drop-zone" data-col="media" id="col-media"></div>
+      </div>
+
+      <!-- COLUNA 3: DESCARTÁVEIS -->
+      <div class="tierlist-column col-descartar" data-col="descartar">
+        <div class="column-header header-descartar">
+          <h3>Ações Sem Relevância</h3>
+          <span class="sub-header">(Descartáveis)</span>
+        </div>
+        <div class="column-cards drop-zone" data-col="descartar" id="col-descartar"></div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- SEÇÃO DA OFICINA PEDAGÓGICA (RODAPÉ E AÇÕES) -->
+  <section class="pedagogical-section">
+    <div id="tip-box" class="tip-box hidden"></div>
+    <div id="alert-box" class="alert-box hidden">Hm... Ainda tem algo errado. Revisem juntos.</div>
+    <div id="timer-text" class="timer-text hidden">Nova tentativa em <span id="timer-seconds">0</span> s.</div>
+
+    <div id="step-tierlist" class="quiz-step">
+      <p class="step-desc">
+        Sua missão é categorizar as ações da equipe de resposta de acordo com a urgência e a relevância.
+      </p>
+
+      <div class="actions-row">
+        <button id="btn-tip" class="btn-tip">💡 Exibir Dica</button>
+        <button id="btn-submit" class="btn-action">Submeter</button>
+      </div>
+    </div>
+  </section>
+
+  <script src="tierlist.js"></script>
+</body>
+</html>
