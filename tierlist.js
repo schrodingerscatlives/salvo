@@ -12,7 +12,7 @@ const cartas = [
   { id: 6, t: "Acionar o plantão de TI e o time de crise", aceita: ["alta"] },
   { id: 7, t: "Descartar com segurança a mercadoria fora da temperatura, trocar as senhas e reunir as lições aprendidas", aceita: ["media"] },
   { id: 8, t: "Investigar até descobrir exatamente quem clicou no e-mail, para responsabilizar a pessoa", aceita: ["descartar"] },
-  { id: 9, t: "Passar as geladeiras para o controle manual na loja e conferir com termômetro", aceita: ["alta", "media"] }
+  { id: 9, t: "Passar as geladeiras para o controle manual na loja", aceita: ["alta", "media"] }
 ];
 
 // DICAS DISPONÍVEIS
@@ -57,6 +57,7 @@ function renderCards() {
   });
 }
 
+/*
 // LÓGICA DE CLIQUE (SELECIONAR CARD E DEPOIS CLICAR NA COLUNA)
 function handleCardClick(e) {
   e.stopPropagation();
@@ -104,6 +105,90 @@ dropZones.forEach(zone => {
     }
   });
 });
+*/
+
+// SELEÇÃO DE CARD VIA CLIQUE (CLICA NO CARD)
+function handleCardClick(e) {
+  e.stopPropagation(); // Impede a propagação para a coluna
+  
+  if (selectedCardElement === this) {
+    this.classList.remove('selected');
+    selectedCardElement = null;
+  } else {
+    if (selectedCardElement) {
+      selectedCardElement.classList.remove('selected');
+    }
+    selectedCardElement = this;
+    this.classList.add('selected');
+  }
+}
+
+// LÓGICA DE CLIQUE NAS COLUNAS (INCLUINDO CABEÇALHOS E TÍTULOS)
+document.querySelectorAll('.tierlist-column').forEach(column => {
+  column.addEventListener('click', function(e) {
+    if (selectedCardElement) {
+      const targetZone = this.querySelector('.column-cards') || this.querySelector('.drop-zone');
+      if (targetZone) {
+        targetZone.appendChild(selectedCardElement);
+        selectedCardElement.classList.remove('selected');
+        selectedCardElement = null;
+      }
+    }
+  });
+
+  // 2. LÓGICA DE DRAG AND DROP NAS COLUNAS E CABEÇALHOS
+  column.addEventListener('dragover', e => {
+    e.preventDefault();
+    column.classList.add('drag-over');
+  });
+
+  column.addEventListener('dragleave', e => {
+    column.classList.remove('drag-over');
+  });
+
+  column.addEventListener('drop', e => {
+    e.preventDefault();
+    column.classList.remove('drag-over');
+    
+    const cardId = e.dataTransfer.getData('text/plain');
+    const draggedCard = document.querySelector(`[data-id="${cardId}"]`);
+    
+    // Se soltar no título ou em qualquer lugar da coluna, envia para a área de cards
+    const targetZone = column.querySelector('.column-cards') || column.querySelector('.drop-zone');
+    if (draggedCard && targetZone) {
+      targetZone.appendChild(draggedCard);
+    }
+  });
+});
+
+// DRAG AND DROP ESPECÍFICO PARA A ÁREA DE CARDS PENDENTES (VOLTAR PRO POOL)
+cardsPool.addEventListener('dragover', e => {
+  e.preventDefault();
+  cardsPool.classList.add('drag-over');
+});
+
+cardsPool.addEventListener('dragleave', () => {
+  cardsPool.classList.remove('drag-over');
+});
+
+cardsPool.addEventListener('drop', e => {
+  e.preventDefault();
+  cardsPool.classList.remove('drag-over');
+  const cardId = e.dataTransfer.getData('text/plain');
+  const draggedCard = document.querySelector(`[data-id="${cardId}"]`);
+  if (draggedCard) {
+    cardsPool.appendChild(draggedCard);
+  }
+});
+
+cardsPool.addEventListener('click', function() {
+  if (selectedCardElement) {
+    cardsPool.appendChild(selectedCardElement);
+    selectedCardElement.classList.remove('selected');
+    selectedCardElement = null;
+  }
+});
+// ****
 
 function handleDragStart(e) {
   e.dataTransfer.setData('text/plain', this.getAttribute('data-id'));
