@@ -1,7 +1,3 @@
-// CONFIGURAÇÃO DOS TEMPOS DE BLOQUEIO (SEG)
-const lockout_wrong_answer = 5;
-const lockout_tip = 10;
-
 // SISTEMA DE DICAS
 let currentTipIndex = 0;
 /*

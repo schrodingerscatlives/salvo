@@ -1,7 +1,3 @@
-// CONFIGURAÇÃO DOS TEMPOS DE BLOQUEIO (EM SEGUNDOS)
-const lockout_wrong_answer = 5;
-const lockout_tip = 10;
-
 // ARRAY DE CARTAS CONFIGURÁVEL
 const cartas = [
   { id: 1, t: "Registrar tudo: horários, prints, quem fez o quê", aceita: ["media", "alta"] },

@@ -1,7 +1,3 @@
-// CONFIGURAÇÃO DOS TEMPOS DE BLOQUEIO (EM SEGUNDOS)
-const lockout_wrong_answer = 5;
-const lockout_tip = 10;
-
 // DICAS DISPONÍVEIS PARA O NÍVEL 4
 let currentTipIndex = 0;
 const tips = [
@@ -9,7 +5,8 @@ const tips = [
   "Audite as estações de trabalho procurando por hábitos de colaboradores que facilitam o acesso direto aos sistemas da empresa.",
   "A LGPD exige que saibamos quem acessou o quê e quando. Procure por dois processos no escritório onde a falta de registros ou de configuração adequada impede completamente a auditoria de saber quem realizou uma ação.",
   "Existem pontos críticos nesta sala onde dados confidenciais ficaram completamente expostos a olhos curiosos.",
-  "Avalie a infraestrutura lógica do ambiente. Há uma configuração invisível no ar e coloca dados corporativos em risco."
+  "Avalie a infraestrutura lógica do ambiente. Há uma configuração invisível no ar e coloca dados corporativos em risco.",
+  "Existem aqui dez falhas e/ou vulnerabilidades relacionadas à proteção de dados e segurança da informação que necessitam de correção imediata."
 ];
 
 let timerInterval = null;
@@ -93,4 +90,9 @@ btnTip.addEventListener('click', () => {
 
     startLockout(lockout_tip, false);
   }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  //EMBARALHA OS Checkboxes da resposta (segunda etapa do nivel)
+  shuffleCheckboxes();
 });

@@ -1,7 +1,3 @@
-// CONFIGURAÇÕES DE LOCKOUT
-const lockout_wrong_answer = 5;
-const lockout_tip = 10;
-
 // ARRAY COM AS CONVERSAS (6 ITENS)
 // P: 'R' (Remetente / Mensagem recebida) | 'D' (Destinatário / Mensagem enviada pelo Paulo)
 const chatsData = [
@@ -35,14 +31,70 @@ const chatsData = [
     id: 3,
     avatar: "images/avatar/avatar_3.png",
     name: "Grupo Operações Loja 03",
-    when: "Hoje",
+    when: "Ontem",
     messages: [
-      { type: "R", time: "09:10", text: "Alguém tem o contato do fornecedor de bobinas térmicas?" },
-      { type: "D", time: "09:15", text: "Enviei no e-mail do grupo pessoal." }
+      { type: "R", time: "07:10", text: "Alguém tem o contato do fornecedor de bobinas térmicas?" },
+      { type: "D", time: "07:15", text: "Enviei no e-mail do grupo pessoal." },
+      { type: "R", time: "07:30", text: "Bom dia, equipe! Abrindo o plantão da Loja 03. Checklist matinal dos freezers concluído, temperatura estável em -18°C." },
+      { type: "R", time: "07:32", text: "@Paulo, aproveitando: o coletor de dados (coletor 04) travou na tela de login de inventário. Consegue dar um 'reboot' remoto nele pelo painel da TI?" },
+      { type: "D", time: "07:40", text: "Bom dia! Consigo sim, aguenta só 5 minutinhos que vou acessar o console do MDM aqui." },
+      { type: "D", time: "07:45", text: "Prontinho, reinicialização forçada enviada. Tenta colocar sua matrícula de novo aí." },
+      { type: "R", time: "07:47", text: "Maravilha, Paulo! Voltou ao normal agora. Salvou o turno, obrigado!" },
+      { type: "R", time: "09:10", text: "Alguém tem o contato atualizado do fornecedor de bobinas térmicas para as impressoras fiscais do caixa?" },
+      { type: "D", time: "09:15", text: "Enviei no e-mail do grupo de suprimentos da rede, dá uma olhada lá." },
+      { type: "R", time: "09:18", text: "Visto aqui, valeu! Outra coisa: a balança do setor de frios deu pane na etiqueta de preço por peso." },
+      { type: "R", time: "09:19", text: "O código de barras sai cortado. Precisa abrir chamado com a Toledo?" },
+      { type: "D", time: "09:22", text: "Sim, abre chamado direto no portal deles e me copia no ticket para eu acompanhar o SLA." },
+      { type: "R", time: "09:25", text: "Fechado. Assim que o técnico emitir a ordem de serviço, eu aviso aqui no grupo." }      
     ]
   },
   {
     id: 4,
+    avatar: "images/avatar/avatar_3.png",
+    name: "Diretoria Executiva - Grupo Gestão",
+    when: "Ontem",
+    messages: [
+      { type: "R", time: "16:40", text: "[Mensagem encaminhada] Prezados, devido aos incidentes cibernéticos que paralisaram concorrentes na Europa, nenhuma alteração de firewall externo será feita sem autorização dupla." },
+      { type: "R", time: "16:41", text: "Paulo, você que cuida do alinhamento com a FrioTech, confirma se o contrato de SLA deles prevê acesso remoto restrito por VPN corporativa com certificado?" },
+      { type: "D", time: "16:45", text: "Olá! Sim, chefe. O contrato estipula que a FrioTech só acessa via túnel IPsec homologado e com MFA ativo no token físico." },
+      { type: "R", time: "16:46", text: "Excelente. Mantenha esse rigor máximo esta semana. Qualquer tentativa fora do padrão, bloqueie imediatamente e reporte à TI." },
+      { type: "D", time: "16:47", text: "Combinado, tudo sob controle por aqui." }
+    ]
+  },  
+  {
+    id: 5,
+    avatar: "images/avatar/avatar_5.png",
+    name: "Carlos Gerente Loja 05",
+    when: "Hoje",
+    messages: [
+      { type: "R", time: "08:00", text: "Bom dia, Paulo! Tudo bem? Passando para avisar que a carreta de resfriados da madrugada descarregou no estoque da Loja 05 sem avarias." },
+      { type: "R", time: "08:02", text: "O termômetro do baú estava marcando 3.5°C na chegada, dentro do padrão de segurança alimentar da nossa política." },
+      { type: "D", time: "08:10", text: "Bom dia, Carlos! Excelente notícia. Anotação registrada aqui no sistema de controle da cadeia de frio." },
+      { type: "R", time: "11:45", text: "Paulo, escuta só: o display do ar-condicionado da sala de atendimento ao cliente travou no modo manual e está congelando o ambiente. Consegue reiniciar via automação?" },
+      { type: "D", time: "11:50", text: "Consigo sim! Vou mandar um comando de reinício para o CLP da unidade agora ao meio-dia, aproveitando o horário de menor movimento." },
+      { type: "R", time: "11:52", text: "Perfeito, agradeço demais! O pessoal da recepção já estava reclamando do frio polar aqui rs." },
+      { type: "R", time: "14:00", text: "Paulo, só atualizando: o comando deu certo, o display voltou ao normal e a temperatura estabilizou em 22°C." },
+      { type: "R", time: "14:01", text: "A recepção de hortifruti da Loja 05 também já foi totalmente finalizada e validada pelo fiscal de turno." },
+      { type: "D", time: "14:12", text: "Show de bola! Obrigado pelo aviso, Carlos. Qualquer outra instabilidade no sistema operacional de monitoramento, me chama aqui." }
+    ]
+  },
+{
+    id: 6,
+    avatar: "images/avatar/avatar_3.png",
+    name: "+55 81 99101-1213 ~Mariana Martinez",
+    when: "Hoje",
+    messages: [
+      { type: "R", time: "11:20", text: "Paulo, tudo bem? Notamos vários alertas de tentativas de login falhas na sua conta da rede nas últimas horas." },
+      { type: "R", time: "11:21", text: "Isso coincidiu com o alerta global de ataques cibernéticos contra parceiros de refrigeração na Europa." },
+      { type: "D", time: "11:22", text: "Putz, sério? Mas eu só acessei do meu note e do celular corporativo." },
+      { type: "R", time: "11:22", text: "Sim, por precaução o sistema de Governança forçou a expiração da sua sessão. Precisa redefinir a senha no próximo acesso." },
+      { type: "R", time: "11:23", text: "Faça isso **somente** pelo portal oficial de identidade (`id.redemangue.com.br`). *Nunca* informe sua senha atual por chat, viu?" },
+      { type: "D", time: "11:24", text: "Perfeito, Mariana. Já vou alterar por lá agora mesmo. Obrigado pelo aviso!" },
+      { type: "R", time: "15:24", text: "Imagina! Qualquer coisa me chama." }
+    ]
+  },
+  {
+    id: 7,
     avatar: "images/avatar/avatar_4.png",
     name: "+55 81 91236-5478 ~Ana Alves",
     when: "Hoje",
@@ -54,26 +106,46 @@ const chatsData = [
       { type: "R", time: "21:56", text: "Resolve isso pra mim, por favor. Não dá pra esperar até amanhã" },
       { type: "D", time: "21:58", text: "Oi Ana, só um minuto. Vou conferir aqui" }
     ]
-  },
+  },  
   {
-    id: 5,
-    avatar: "images/avatar/avatar_5.png",
-    name: "Carlos Gerente Loja 05",
-    when: "Hoje",
-    messages: [
-      { type: "R", time: "14:00", text: "Paulo, a recepção de hortifruti da Loja 05 foi finalizada." },
-      { type: "D", time: "14:12", text: "Show! Obrigado pelo aviso Carlos." }
-    ]
-  },
-  {
-    id: 6,
+    id: 8,
     avatar: "images/avatar/avatar_6.png",
     name: "Friotech",
     when: "Hoje",
     messages: [
       { type: "R", time: "21:53", text: "Seu código de acesso é 482 913. Não compartilhe este código com ninguém." }
     ]
-  }
+  },  
+  {
+    id: 9,
+    avatar: "images/avatar/avatar_3.png",
+    name: "Engenharia FrioTech - Plantão",
+    when: "Hoje",
+    messages: [
+      { type: "R", time: "22:05", text: "Olá Paulo, aqui é o engenheiro Roberto da FrioTech (Plantão de Emergência Noturna)." },
+      { type: "R", time: "22:05", text: "Recebemos um alerta de variação brusca de pressão no compressor principal da Loja 12." },
+      { type: "D", time: "22:07", text: "Eita! O painel aqui marcou queda de telemetria agora há pouco também." },
+      { type: "R", time: "22:07", text: "Pois é. Nossa equipe de campo já está em deslocamento com a viatura 04 para checar a válvula física no local." },
+      { type: "R", time: "22:08", text: "Para evitar acionamento incorreto do alarme geral de incêndio/amônia, precisamos que você aprove a janela de override técnico no painel mestre." },
+      { type: "D", time: "22:10", text: "Entendido. Vou liberar o acesso temporário restrito direto no terminal seguro da gerência." },
+      { type: "R", time: "22:11", text: "Perfeito. Te dou retorno assim que o técnico Bruno estiver plugado na chave física." }
+    ]
+  },
+  {
+    id: 10,
+    avatar: "images/avatar/avatar_7.png",
+    name: "Carla Mendes - FrioTech",
+    when: "Hoje",
+    messages: [
+      { type: "R", time: "22:30", text: "Boa noite, Paulo! Tudo bem?" },
+      { type: "R", time: "22:30", text: "Lembra daquele relatório trimestral de manutenção preventiva das 40 lojas que enviei ontem por e-mail?" },
+      { type: "D", time: "22:35", text: "Boa noite Carla! Sim, recebi e já encaminhei para a auditoria interna." },
+      { type: "R", time: "22:35", text: "Ótimo! Só notei agora que a tabela da Loja 08 ficou com uma linha duplicada na medição de temperatura de ontem." },
+      { type: "R", time: "22:36", text: "Vou gerar um aditivo corrigido e te mando por e-mail oficial da FrioTech ainda hoje, tá?" },
+      { type: "D", time: "22:38", text: "Sem problemas, tranquilo! Fico no aguardo." },
+      { type: "R", time: "22:38", text: "Obrigada pela parceria!" }
+    ]
+  }  
 ];
 
 let selectedChatId = 1;
@@ -256,7 +328,7 @@ function startLockout(seconds, showAlertBox = false) {
 
 // SUBMETER ETAPA 1 (ISCA DA CONVERSA)
 btnSubmitStep1.addEventListener('click', () => {
-  if (selectedChatId === 4) {
+  if (selectedChatId === 7) {
     // Acertou a conversa da Ana Falsa (Id 4)
     alertBox.classList.add('hidden');
     step1.classList.add('hidden');
@@ -274,7 +346,7 @@ btnSubmitStep2.addEventListener('click', () => {
     document.querySelectorAll('.checkbox-group input[type="checkbox"]:checked')
   ).map(cb => cb.value).sort();
 
-  const correctValues = ['a', 'c', 'e', 'g'];
+  const correctValues = ['a', 'c', 'e'];
 
   const isCorrect = 
     checkedValues.length === correctValues.length &&
@@ -306,6 +378,13 @@ btnTip.addEventListener('click', () => {
 });
 
 // INICIALIZAÇÃO
+
+document.addEventListener("DOMContentLoaded", () => {
+  //EMBARALHA OS Checkboxes da resposta (segunda etapa do nivel)
+  shuffleCheckboxes();
+});
+
+
 renderChatList();
 renderMessages(1);
 zapBody.classList.remove('viewing-chat');

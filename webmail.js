@@ -1,11 +1,6 @@
 // CONFIGURAÇÃO: Define se exibe o destino real do link em telas pequenas/mobile (<= 768px)
-const SHOW_LINK_DESTINATION_ON_MOBILE = true;
-
-//CONFIGURAÇÃO: Define os tempos de espera (em segundos) para o caso de resposta errada ou dica solicitada
-//const lockout_wrong_answer = 30;
-//const lockout_tip = 60;
-const lockout_wrong_answer = 5;
-const lockout_tip = 10;
+const SHOW_LINK_DESTINATION_ON_MOBILE = false;
+const SHOW_LINK_DESTINATION_ON_LARGE_SCREENS = false;
 
 // DADOS DOS E-MAILS
 const emailsData = {
@@ -16,24 +11,49 @@ const emailsData = {
     body: `Olá, equipe.<br><br>Lembrando que o treinamento de segurança da informação será na quinta, às 10h, na sala 3. Dúvidas, falem com a TI no ramal 2040.<br><br>Equipe de TI, Rede Mangue Mercados`
   },
   2: {
+    sender: "compliance.lgpd@redemangue.com.br",
+    name: "Encarregado de Dados (DPO) - Rede Mangue",
+    subject: "Pesquisa de Consciência em Segurança e Tratamento de Dados Pessoais e Operacionais",
+    body: `Olá, colaborador(a),<br><br>Como parte do nosso programa contínuo de adequação à Lei Geral de Proteção de Dados (LGPD) e fortalecimento da cultura de cibersegurança — especialmente considerando o aumento de ameaças globais direcionadas a redes de varejo e seus fornecedores de infraestrutura crítica —, convidamos você a responder à nossa breve pesquisa interna de percepção de riscos.<br><br>O questionário leva menos de 3 minutos e nos ajuda a mapear pontos de melhoria nos treinamentos corporativos. Suas respostas são totalmente confidenciais e anonimizadas.<br><br>Você pode acessar a plataforma oficial de conformidade através do link seguro da rede interna: <a href="#" class="phishing-link" title="https://compliance.redemangue.com.br/pesquisa2026">compliance.redemangue.com.br/pesquisa2026</a>.<br><br>Agradecemos sua colaboração na proteção dos dados dos nossos clientes e da operação da Rede Mangue.<br><br>Atenciosamente,<br><strong>Marcos Vinícius</strong><br>Encarregado de Proteção de Dados (DPO) / LGPD<br>Rede Mangue Mercados`,
+  },
+  3: {
+    sender: "seguranca.ti@redemangue.com.br",
+    name: "Governança e Segurança da Informação",
+    subject: "Comunicado Oficial: Atualização obrigatória de diretrizes de acesso remoto (LGPD / Cadeia de Suprimentos)",
+    body: `Prezados gestores e operadores de sistemas da Rede Mangue Mercados,<br><br>Em virtude dos recentes incidentes cibernéticos noticiados internacionalmente, a Diretoria de Tecnologia e o comitê de conformidade da LGPD determinam a revisão imediata dos protocolos de segurança para acesso aos sistemas de telemetria de frio.<br><br>Pedimos que leiam atentamente o documento orientativo em anexo (<span style="color: #0066cc;">Diretrizes_Seguranca_Frio_v4.pdf</span>) e repassem as diretrizes às equipes de turno. Nenhuma credencial de acesso corporativo deve ser compartilhada por canais externos.<br><br>Para dúvidas técnicas ou reporte de anomalias operacionais, utilize exclusivamente o canal interno oficial ou abra um chamado no portal <a href="#" class="phishing-link" title="https://intranet.redemangue.com.br/suporte">intranet.redemangue.com.br/suporte</a>.<br><br>Atenciosamente,<br><strong>Comitê de Gestão de Riscos e Segurança da Informação</strong><br>Rede Mangue Mercados S.A.`,
+    attachment: "Diretrizes_Seguranca_Frio_v4.pdf"
+  },
+  4: {
+    sender: "suporte.tecnico@friotech.com.br",
+    name: "Central de Atendimento FrioTech",
+    subject: "Aviso Programado: Janela de manutenção nos servidores de telemetria das câmaras frias",
+    body: `Prezado cliente (Rede Mangue Mercados),<br><br>Informamos que, visando garantir a estabilidade e a segurança contra vulnerabilidades recentes que afetam infraestruturas críticas de refrigeração na Europa, realizaremos uma atualização programada nos servidores centrais de monitoramento de temperatura da FrioTech.<br><br><strong>Data da intervenção:</strong> Quarta-feira, das 01:00 às 03:00 (horário de Brasília).<br><strong>Impacto esperado:</strong> Indisponibilidade temporária dos gráficos de telemetria em tempo real no painel web. Os controladores locais instalados nos compressores dos supermercados continuarão operando de modo autônomo, garantindo a segurança dos alimentos armazenados sem risco de interrupção mecânica.<br><br>Qualquer suporte de emergência durante a janela pode ser acionado pelo telefone de plantão corporativo informado em seu contrato de SLA. O status em tempo real pode ser acompanhado em <a href="#" class="phishing-link" title="https://status.friotech.com.br">status.friotech.com.br</a>.<br><br>Atenciosamente,<br>Equipe de Operações e Infraestrutura de TI<br>FrioTech`,
+  },
+  5: {    
+    sender: "suporte@fri0tech-portal.com",
+    name: "Suporte FrioTech",
+    subject: "URGENTE: seu acesso ao painel expira em 2 horas",
+    body: `Prezado cliente,<br><br>Detectamos atividade incomum na sua conta. Para evitar o bloqueio do monitoramento das suas lojas, revalide seu login e senha em até 2 horas:<br><br><a href="#" class="phishing-link" title="https://fri0tech.com.br/acesso">www.fri0tech.com.br/acesso</a> <span class="mobile-link-destination">&lt;https://fri0tech.com.br/acesso&gt;</span><br><br>Equipe de Suporte`
+  },
+  6: {
+    sender: "faturamento@friotech.com.br",
+    name: "Setor Financeiro - FrioTech",
+    subject: "NF-e 004829/2026 - Manutenção Preventiva dos compressores (Lojas 5 a 12)",
+    body: `Olá, equipe financeira e de suprimentos da Rede Mangue,<br><br>Conforme o contrato de prestação de serviços de manutenção preventiva dos sistemas de refrigeração comercial (referente ao cronograma de novembro), encaminhamos em anexo a Nota Fiscal nº 004829/2026 e o respectivo relatório técnico assinado pelos engenheiros responsáveis em campo.<br><br>Lembramos que o boleto bancário correspondente foi gerado diretamente no DDA cadastrado em nosso sistema oficial. Em caso de divergências nos valores ou necessidade de conferência, acessem o portal do cliente em <a href="#" class="phishing-link" title="https://friotech.com.br/financeiro">friotech.com.br/financeiro</a>.<br><br>Cordialmente,<br><strong>Débora Siqueira</strong><br>Departamento de Faturamento e Cobrança<br>FrioTech Sistemas de Refrigeração Ltda.`,
+    attachment: "NF_004829_FrioTech.pdf"
+  },
+  7: {
+    sender: "rh@redemangue.com.br",
+    name: "Recursos Humanos",
+    subject: "Holerite de outubro disponível",
+    body: `Olá!<br><br>O holerite de outubro já pode ser consultado no Portal do RH. Acesse: <a href="#" class="phishing-link" title="https://redemangue.com.br/acesso">redemangue.com.br/acesso</a> <span class="mobile-link-destination">&lt;https://redemangue.com.br/acesso&gt;</span>.<br><br>Recursos Humanos`
+  },  
+  8: {
     sender: "contato@friotech.com.br",
     name: "Carla Mendes - FrioTech",
     subject: "Boletim trimestral de manutenção",
     body: `Prezado Paulo,<br><br>O relatório de manutenção do 3º trimestre das 40 lojas segue em anexo e já está disponível no portal de clientes.<br><a href="#" class="phishing-link" title="https://friotech.com.br/acesso">www.friotech.com.br/acesso</a> <span class="mobile-link-destination">&lt;https://friotech.com.br/acesso&gt;</span><br><br>Atenciosamente,<br>Carla Mendes, FrioTech`,
     attachment: "Relatorio.pdf"
-  },
-  3: {
-    //sender: "Suporte FrioTech <suporte@fri0tech-portal.com>",
-    sender: "suporte@fri0tech-portal.com",
-    name: "Suporte FrioTech",
-    subject: "URGENTE: seu acesso ao painel expira em 2 horas",
-    body: `Prezado cliente,<br><br>Detectamos atividade incomum na sua conta. Para evitar o bloqueio do monitoramento das suas lojas, revalide seu login e senha em até 2 horas:<br><br><a href="#" class="phishing-link" title="https://fri0tech.com.br/acesso">www.friotech.com.br/acesso</a> <span class="mobile-link-destination">&lt;https://fri0tech.com.br/acesso&gt;</span><br><br>Equipe de Suporte`
-  },
-  4: {
-    sender: "rh@redemangue.com.br",
-    name: "Recursos Humanos",
-    subject: "Holerite de outubro disponível",
-    body: `Olá!<br><br>O holerite de outubro já pode ser consultado no Portal do RH. Acesse: <a href="#" class="phishing-link" title="https://redemangue.com.br/acesso">redemangue.com.br/acesso</a> <span class="mobile-link-destination">&lt;https://redemangue.com.br/acesso&gt;</span>.<br><br>Recursos Humanos`
   }
 };
 
@@ -186,7 +206,7 @@ function startLockout(seconds, showAlertBox = false) {
 
 // APERTOU "ENVIAR" NA ETAPA 1
 btnSubmitStep1.addEventListener('click', () => {
-  if (selectedEmailId === 3) {
+  if (selectedEmailId === 5) {
     // Acertou a isca de Phishing
     alertBox.classList.add('hidden');
     step1.classList.add('hidden');
@@ -239,9 +259,15 @@ btnTip.addEventListener('click', () => {
 // INICIALIZAÇÃO
 
 // Aplica a exibição do link explicativo apenas se a constante estiver ativa
-if (SHOW_LINK_DESTINATION_ON_MOBILE) {
-  document.body.classList.add('show-mobile-links');
-}
+//if (SHOW_LINK_DESTINATION_ON_MOBILE || SHOW_LINK_DESTINATION_ON_LARGE_SCREENS) {
+//  document.body.classList.add('show-mobile-links');
+//}
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  //EMBARALHA OS Checkboxes da resposta (segunda etapa do nivel)
+  shuffleCheckboxes();
+});
 
 //selectEmail(1); //Aqui abre ja no conteudo do primeiro email.
 // Aqui ao invés de abrir dentro do primeiro email, abre com o primeiro email selecionado, porem na caixa de entrada.
