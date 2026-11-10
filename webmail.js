@@ -36,7 +36,7 @@ const emailsData = {
     body: `Prezado cliente,<br><br>Detectamos atividade incomum na sua conta. Para evitar o bloqueio do monitoramento das suas lojas, revalide seu login e senha em até 2 horas:<br><br><a href="#" class="phishing-link" title="https://fri0tech.com.br/acesso">www.fri0tech.com.br/acesso</a> <span class="mobile-link-destination">&lt;https://fri0tech.com.br/acesso&gt;</span><br><br>Equipe de Suporte`
   },
   6: {
-    sender: "faturamento@friotech.com.br",
+    sender: "faturamento@friotеch.com.br",
     name: "Setor Financeiro - FrioTech",
     subject: "NF-e 004829/2026 - Manutenção Preventiva dos compressores (Lojas 5 a 12)",
     body: `Olá, equipe financeira e de suprimentos da Rede Mangue,<br><br>Conforme o contrato de prestação de serviços de manutenção preventiva dos sistemas de refrigeração comercial (referente ao cronograma de novembro), encaminhamos em anexo a Nota Fiscal nº 004829/2026 e o respectivo relatório técnico assinado pelos engenheiros responsáveis em campo.<br><br>Lembramos que o boleto bancário correspondente foi gerado diretamente no DDA cadastrado em nosso sistema oficial. Em caso de divergências nos valores ou necessidade de conferência, acessem o portal do cliente em <a href="#" class="phishing-link" title="https://friotеch.com.br/financeiro">friotеch.com.br/financeiro</a>.<br><br>Cordialmente,<br><strong>Débora Siqueira</strong><br>Departamento de Faturamento e Cobrança<br>FrioTech Sistemas de Refrigeração Ltda.`,
