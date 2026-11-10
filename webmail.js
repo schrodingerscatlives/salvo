@@ -39,7 +39,7 @@ const emailsData = {
     sender: "faturamento@friotech.com.br",
     name: "Setor Financeiro - FrioTech",
     subject: "NF-e 004829/2026 - Manutenção Preventiva dos compressores (Lojas 5 a 12)",
-    body: `Olá, equipe financeira e de suprimentos da Rede Mangue,<br><br>Conforme o contrato de prestação de serviços de manutenção preventiva dos sistemas de refrigeração comercial (referente ao cronograma de novembro), encaminhamos em anexo a Nota Fiscal nº 004829/2026 e o respectivo relatório técnico assinado pelos engenheiros responsáveis em campo.<br><br>Lembramos que o boleto bancário correspondente foi gerado diretamente no DDA cadastrado em nosso sistema oficial. Em caso de divergências nos valores ou necessidade de conferência, acessem o portal do cliente em <a href="#" class="phishing-link" title="https://friotech.com.br/financeiro">friotech.com.br/financeiro</a>.<br><br>Cordialmente,<br><strong>Débora Siqueira</strong><br>Departamento de Faturamento e Cobrança<br>FrioTech Sistemas de Refrigeração Ltda.`,
+    body: `Olá, equipe financeira e de suprimentos da Rede Mangue,<br><br>Conforme o contrato de prestação de serviços de manutenção preventiva dos sistemas de refrigeração comercial (referente ao cronograma de novembro), encaminhamos em anexo a Nota Fiscal nº 004829/2026 e o respectivo relatório técnico assinado pelos engenheiros responsáveis em campo.<br><br>Lembramos que o boleto bancário correspondente foi gerado diretamente no DDA cadastrado em nosso sistema oficial. Em caso de divergências nos valores ou necessidade de conferência, acessem o portal do cliente em <a href="#" class="phishing-link" title="https://friotеch.com.br/financeiro">friotеch.com.br/financeiro</a>.<br><br>Cordialmente,<br><strong>Débora Siqueira</strong><br>Departamento de Faturamento e Cobrança<br>FrioTech Sistemas de Refrigeração Ltda.`,
     attachment: "NF_004829_FrioTech.pdf"
   },
   7: {
@@ -204,6 +204,13 @@ function startLockout(seconds, showAlertBox = false) {
   }, 1000);
 }
 
+function atualizarTextoOpcaoExtra(cb_name, cb_text) {
+  const checkboxText = document.getElementById(cb_name);
+  if (checkboxText) {
+    checkboxText.textContent = cb_text;
+  }
+}
+
 // APERTOU "ENVIAR" NA ETAPA 1
 btnSubmitStep1.addEventListener('click', () => {
   if (selectedEmailId === 5) {
@@ -211,6 +218,14 @@ btnSubmitStep1.addEventListener('click', () => {
     alertBox.classList.add('hidden');
     step1.classList.add('hidden');
     step2.classList.remove('hidden');
+  } else if (selectedEmailId === 6) {
+    // Acertou a isca "secreta" de Phishing
+    atualizarTextoOpcaoExtra('text-cb-b', 'Uso de caracteres homógrafos (letras cirílicas/internacionais) para imitar o domínio original;');
+    atualizarTextoOpcaoExtra('text-cb-c', 'Aparente normalidade (não há urgência) e tom corporativo comum para baixar a guarda do usuário;');
+    atualizarTextoOpcaoExtra('text-cb-d', 'Não exige dados no texto, mas leva a uma página de acesso clonada para que o usuário digite suas credenciais sem desconfiar;');
+    alertBox.classList.add('hidden');
+    step1.classList.add('hidden');
+    step2.classList.remove('hidden');    
   } else {
     // Errou o e-mail -> Penalidade de 30s
     startLockout(lockout_wrong_answer, true); 

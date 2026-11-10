@@ -1,6 +1,6 @@
 //CONFIGURAÇÃO: Define os tempos de espera (em segundos) para o caso de resposta errada ou dica solicitada
-const lockout_wrong_answer = 60;
-const lockout_tip = 30;
+const lockout_wrong_answer = 30;
+const lockout_tip = 20;
 //const lockout_wrong_answer = 5;
 //const lockout_tip = 10;
 
